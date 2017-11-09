@@ -1,3 +1,3 @@
 # DnD-Frontend
 
-Frontend application for CMSC 508 final project
+A delicious frontend application for CMSC 508 final project
