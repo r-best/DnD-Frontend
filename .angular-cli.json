@@ -1,28 +1,28 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "project": {
-    "name": "dn-d-frontend"
-  },
-  "apps": [
-    {
-      "root": "src",
-      "outDir": "dist",
-      "assets": [
-        "favicon.ico"
-      ],
-      "index": "index.html",
-      "main": "main.ts",
-      "polyfills": "polyfills.ts",
-      "tsconfig": "tsconfig.app.json",
-      "prefix": "app",
-      "styles": [
-        "styles.css"
-      ],
-      "scripts": []
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "project": {
+        "name": "dn-d-frontend"
+    },
+    "apps": [
+        {
+        "root": "src",
+        "outDir": "dist",
+        "assets": [
+            "favicon.ico"
+        ],
+        "index": "index.html",
+        "main": "main.ts",
+        "polyfills": "polyfills.ts",
+        "tsconfig": "tsconfig.app.json",
+        "prefix": "app",
+        "styles": [
+            "styles.css"
+        ],
+        "scripts": []
+        }
+    ],
+    "defaults": {
+        "styleExt": "css",
+        "component": {}
     }
-  ],
-  "defaults": {
-    "styleExt": "css",
-    "component": {}
-  }
 }
