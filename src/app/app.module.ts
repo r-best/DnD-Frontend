@@ -5,10 +5,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SpellbookComponent } from './spellbook/spellbook.component';
 
 const routes: Routes = [
     {path: ``, redirectTo: `/dashboard`, pathMatch: `full`},
     {path: 'dashboard', component: DashboardComponent},
+    {path: `spellbook`, component: SpellbookComponent}
 ];
 
 @NgModule({
@@ -18,7 +20,8 @@ const routes: Routes = [
     ],
     declarations: [
         AppComponent,
-        DashboardComponent
+        DashboardComponent,
+        SpellbookComponent
     ],
     providers: [],
     bootstrap: [AppComponent]
