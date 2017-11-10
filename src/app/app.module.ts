@@ -1,11 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpModule } from '@angular/http';
 
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SpellbookComponent } from './spellbook/spellbook.component';
+
+import { ApiService } from './services/api.service';
 
 const routes: Routes = [
     {path: ``, redirectTo: `/dashboard`, pathMatch: `full`},
@@ -16,6 +19,7 @@ const routes: Routes = [
 @NgModule({
     imports: [
         BrowserModule,
+        HttpModule,
         RouterModule.forRoot(routes)
     ],
     declarations: [
@@ -23,7 +27,7 @@ const routes: Routes = [
         DashboardComponent,
         SpellbookComponent
     ],
-    providers: [],
+    providers: [ApiService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
