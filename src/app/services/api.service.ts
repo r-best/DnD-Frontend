@@ -11,14 +11,15 @@ export class ApiService {
 
     constructor(private http: Http) { }
 
-    GET(route: string): Observable<{}>{
+    GET(route: string): Observable<JSON>{
         return this.http.get(`${apiAddress}${route}`)
             .map((res: Response) => {
-                let data = [];
-                for(let i = 0; i < res.json().length; i++){
-                    data[i] = res.json()[i];
-                }
-                return data;
+                console.log(res.json())
+                return res.json()
             });
+            // .catch((err, observable) => {
+            //     console.error(err)
+            //     return null;
+            // });
     }
 }

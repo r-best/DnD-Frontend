@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApiService } from '../services/api.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'app-spellbook',
@@ -10,13 +11,17 @@ import { ApiService } from '../services/api.service';
 export class SpellbookComponent implements OnInit {
     private spells;
 
+    private spellSubscription: Subscription;
+
     constructor(private api: ApiService) { }
 
     ngOnInit() {
-        let x;
-        this.api.GET(`/spells`).subscribe((res)=>{
+        this.spellSubscription = this.api.GET(`/spells`).subscribe((res)=>{
             this.spells = res;
         });
     }
 
+    ngOnDestroy(){
+        this.spellSubscription.unsubscribe();
+    }
 }
