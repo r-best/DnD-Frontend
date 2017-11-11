@@ -10,12 +10,16 @@ import { SpellbookComponent } from './spellbook/spellbook.component';
 
 import { ApiService } from './services/api.service';
 import { SpellpageComponent } from './spellpage/spellpage.component';
+import { CampaignsComponent } from './campaigns/campaigns.component';
+import { PlayersComponent } from './players/players.component';
 
 const routes: Routes = [
     {path: ``, redirectTo: `/dashboard`, pathMatch: `full`},
     {path: 'dashboard', component: DashboardComponent},
     {path: `spellbook`, component: SpellbookComponent},
-    {path: `spellbook/:spell`, component: SpellpageComponent}
+    {path: `spellbook/:spell`, component: SpellpageComponent},
+    {path: `campaigns`, component: CampaignsComponent},
+    {path: `campaigns/:campaign`, component: PlayersComponent}
 ];
 
 @NgModule({
@@ -28,7 +32,9 @@ const routes: Routes = [
         AppComponent,
         DashboardComponent,
         SpellbookComponent,
-        SpellpageComponent
+        SpellpageComponent,
+        CampaignsComponent,
+        PlayersComponent
     ],
     providers: [ApiService],
     bootstrap: [AppComponent]
