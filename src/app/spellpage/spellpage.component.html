@@ -1,10 +1,17 @@
+<nav role="navigation">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/spellbook">Spellbook</a></li>
+        <li class="breadcrumb-item" active>{{spell.NAME}}</li>
+    </ol>
+</nav>
 <div class="container">
-    <h1>{{this.spell.NAME}}</h1>
-    <p><b>{{this.spell.DESCR}}</b></p>
-    <p>Level: {{this.spell.LV}}</p>
-    <p>Range: {{this.spell.RANGE}}</p>
-    <p>Duration: {{this.spell.DURATION}}</p>
-    <p>Casting Time: {{this.spell.CAST_TIME}}</p>
-    <p>School: {{this.spell.SCHOOL}}</p>
-    <p>Requires Concentration?: {{this.spell.CONCENTRATION ? 'Yes' : 'No'}}</p>
+    <h1>{{spell.NAME}}</h1>
+    <p><b>{{spell.DESCR}}</b></p>
+    <p>Level: {{spell.LV}}</p>
+    <p>Range: {{spell.RANGE}}</p>
+    <p>Duration: {{spell.DURATION}}</p>
+    <p>Casting Time: {{spell.CAST_TIME}}</p>
+    <p>School: {{spell.SCHOOL}}</p>
+    <p>Requires Concentration?: {{spell.CONCENTRATION ? 'Yes' : 'No'}}</p>
 </div>
