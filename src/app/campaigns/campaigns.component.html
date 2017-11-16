@@ -1,9 +1,3 @@
-<nav role="navigation">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item" active>Campaigns</li>
-    </ol>
-</nav>
 <div class="container" *ngFor="let campaign of campaigns">
     <a class="btn" href="/campaigns/{{campaign.CAMPAIGN_NAME}}">{{campaign.CAMPAIGN_NAME}}</a>
 </div>

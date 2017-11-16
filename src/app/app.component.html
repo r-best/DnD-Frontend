@@ -1,1 +1,9 @@
+<nav role="navigation">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" *ngFor="let item of nav" style="text-transform:capitalize">
+            <a *ngIf="item.link" href="{{item.link}}">{{item.name}}</a>
+            <a *ngIf="!item.link">{{item.name}}</a>
+        </li>
+    </ol>
+</nav>
 <router-outlet></router-outlet>
