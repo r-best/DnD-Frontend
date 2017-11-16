@@ -3,9 +3,9 @@
         <li class="breadcrumb-item"><a href="/">Home</a></li>
         <li class="breadcrumb-item"><a href="/campaigns">Campaigns</a></li>
         <li class="breadcrumb-item">{{campaign}}</li>
-        <li class="breadcrumb-item">Players</li>
+        <li class="breadcrumb-item" active>Players</li>
     </ol>
 </nav>
 <div class="container" *ngFor="let player of players">
-    <a class="btn" href="#">{{player.NAME}}</a>
+    <a class="btn" href="/campaigns/{{campaign}}/{{player.NAME}}">{{player.NAME}}</a>
 </div>

@@ -13,7 +13,7 @@ export class PlayersComponent implements OnInit {
     private campaign;
     private players;
     
-    private playerSubscription: Subscription;
+    private playersSubscription: Subscription;
 
     constructor(private api: ApiService, private route: ActivatedRoute) { }
 
@@ -21,12 +21,12 @@ export class PlayersComponent implements OnInit {
         this.campaign = this.route.snapshot.params[`campaign`];
         console.log(`Campaign: ${this.campaign}`)
         console.log(`/campaigns/${this.route.snapshot.params[`campaign`]}`)
-        this.playerSubscription = this.api.GET(`/campaigns/${this.route.snapshot.params[`campaign`]}/players`).subscribe((res)=>{
+        this.playersSubscription = this.api.GET(`/campaigns/${this.route.snapshot.params[`campaign`]}/players`).subscribe((res)=>{
             this.players = res;
         });
     }
 
     ngOnDestroy(){
-        this.playerSubscription.unsubscribe();
+        this.playersSubscription.unsubscribe();
     }
 }
