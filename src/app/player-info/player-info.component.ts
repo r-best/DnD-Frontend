@@ -12,20 +12,29 @@ import { Subscription } from 'rxjs/Subscription';
 export class PlayerInfoComponent implements OnInit {
     private campaign;
     private player;
+    private levels;
 
     private playerSubscription: Subscription;
+    private levelsSubscription: Subscription;
 
     constructor(private api: ApiService, private route: ActivatedRoute) { }
 
     ngOnInit() {
         this.campaign = this.route.snapshot.params[`campaign`];
-        this.playerSubscription = this.api.GET(`/campaigns/${this.campaign}/players/${this.route.snapshot.params[`player`]}`).subscribe((res)=>{
-            this.player = res;
-        });
+        let playerName = this.route.snapshot.params[`player`];
+        this.playerSubscription = this.api.GET(`/campaigns/${this.campaign}/players/${playerName}`)
+            .subscribe((res)=>{
+                this.player = res;
+            });
+        this.levelsSubscription = this.api.GET(`/campaigns/${this.campaign}/players/${playerName}/level`)
+            .subscribe(res => {
+                this.levels = res;
+            });
     }
-  
+
     ngOnDestroy(){
         this.playerSubscription.unsubscribe();
+        this.levelsSubscription.unsubscribe();
     }
 
 }
