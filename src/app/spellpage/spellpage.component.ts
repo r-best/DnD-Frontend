@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../shared/services/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+
+const models = require(`../shared/models/models`);
 
 @Component({
   selector: 'app-spellpage',
@@ -10,7 +12,7 @@ import { Subscription } from 'rxjs/Subscription';
   encapsulation: ViewEncapsulation.None
 })
 export class SpellpageComponent implements OnInit {
-    private spell: JSON;
+    private spell: JSON = models.spell;
 
     private spellSubcription: Subscription;
 

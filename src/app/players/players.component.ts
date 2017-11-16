@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../shared/services/api.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
+
+const models = require(`../shared/models/models`);
 
 @Component({
   selector: 'app-players',
@@ -10,8 +12,8 @@ import { ActivatedRoute } from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class PlayersComponent implements OnInit {
-    private campaign;
-    private players;
+    private campaign: string;
+    private players: JSON;
     
     private playersSubscription: Subscription;
 

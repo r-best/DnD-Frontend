@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../shared/services/api.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
