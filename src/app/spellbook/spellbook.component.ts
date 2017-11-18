@@ -25,6 +25,7 @@ export class SpellbookComponent implements OnInit {
     ];
     private nameFilter: string = "";
     private schoolFilter: string = "None";
+    private concentrationFilter: string = "N/A";
 
     private spellSubscription: Subscription;
 

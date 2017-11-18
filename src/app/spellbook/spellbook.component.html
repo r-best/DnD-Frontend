@@ -11,9 +11,15 @@ Filter by School:
     <option>Necromancy</option>
     <option>Transmutation</option>
 </select>
+Requires Concentration?
+<select [(ngModel)]="concentrationFilter">
+    <option>N/A</option>
+    <option>Yes</option>
+    <option>No</option>
+</select>
 <div class="container" *ngFor="let level of spells; let i = index" [attr.data-index]="i">
     <h4>Level {{i}}</h4>
-    <div class="container" *ngFor="let spell of spells[i] | filterspells:nameFilter:schoolFilter">
+    <div class="container" *ngFor="let spell of spells[i] | filterspells:nameFilter:schoolFilter:concentrationFilter">
         <a class="btn" href="/spellbook/{{spell.SPELL_NAME}}">{{spell.SPELL_NAME}}</a>
     </div>
 </div>
