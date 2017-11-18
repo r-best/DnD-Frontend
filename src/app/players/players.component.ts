@@ -13,7 +13,7 @@ const models = require(`../shared/models/models`);
 })
 export class PlayersComponent implements OnInit {
     private campaign: string;
-    private players: JSON;
+    private players: {};
     
     private playersSubscription: Subscription;
 

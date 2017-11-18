@@ -12,7 +12,7 @@ const models = require(`../shared/models/models`);
   encapsulation: ViewEncapsulation.None
 })
 export class SpellpageComponent implements OnInit {
-    private spell: JSON = models.spell;
+    private spell: {} = models.spell;
 
     private spellSubcription: Subscription;
 

@@ -11,7 +11,7 @@ export class ApiService {
 
     constructor(private http: Http) { }
 
-    GET(route: string): Observable<JSON>{
+    GET(route: string): Observable<[{}]>{
         return this.http.get(`${apiAddress}${route}`)
             .map((res: Response) => {
                 console.log(res.json())
