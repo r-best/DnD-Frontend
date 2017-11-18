@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 
 import { ApiService } from './shared/services/api.service';
 
-import { SpellNameFilter } from './shared/filters/spell_name.filter';
+import { SpellFilter } from './shared/filters/spell.filter';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -41,7 +41,7 @@ const routes: Routes = [
         CampaignsComponent,
         PlayersComponent,
         PlayerInfoComponent,
-        SpellNameFilter
+        SpellFilter
     ],
     providers: [ApiService],
     bootstrap: [AppComponent]

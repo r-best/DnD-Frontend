@@ -1,7 +1,19 @@
-Filter by Name: <input type="text" [(ngModel)]="nameFilter"/>
+Filter by Name: <input type="text" [(ngModel)]="nameFilter"/><br />
+Filter by School:
+<select [(ngModel)]="schoolFilter">
+    <option>None</option>
+    <option>Abjuration</option>
+    <option>Conjuration</option>
+    <option>Divination</option>
+    <option>Enchantment</option>
+    <option>Evocation</option>
+    <option>Illusion</option>
+    <option>Necromancy</option>
+    <option>Transmutation</option>
+</select>
 <div class="container" *ngFor="let level of spells; let i = index" [attr.data-index]="i">
     <h4>Level {{i}}</h4>
-    <div class="container" *ngFor="let spell of spells[i] | spellname:nameFilter">
+    <div class="container" *ngFor="let spell of spells[i] | filterspells:nameFilter:schoolFilter">
         <a class="btn" href="/spellbook/{{spell.SPELL_NAME}}">{{spell.SPELL_NAME}}</a>
     </div>
 </div>
