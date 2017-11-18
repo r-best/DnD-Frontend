@@ -23,6 +23,7 @@ export class SpellbookComponent implements OnInit {
         [], // Level 8 spells
         [], // Level 9 spells
     ];
+    private nameFilter: string = "";
 
     private spellSubscription: Subscription;
 

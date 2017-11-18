@@ -2,8 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
+import { FormsModule } from '@angular/forms';
 
 import { ApiService } from './shared/services/api.service';
+
+import { SpellNameFilter } from './shared/filters/spell_name.filter';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -27,6 +30,7 @@ const routes: Routes = [
     imports: [
         BrowserModule,
         HttpModule,
+        FormsModule,
         RouterModule.forRoot(routes)
     ],
     declarations: [
@@ -36,7 +40,8 @@ const routes: Routes = [
         SpellpageComponent,
         CampaignsComponent,
         PlayersComponent,
-        PlayerInfoComponent
+        PlayerInfoComponent,
+        SpellNameFilter
     ],
     providers: [ApiService],
     bootstrap: [AppComponent]
