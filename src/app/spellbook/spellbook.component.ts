@@ -23,7 +23,7 @@ export class SpellbookComponent implements OnInit {
         [], // Level 8 spells
         [], // Level 9 spells
     ];
-    private classes = [];
+    private classes = []; // Used to store a list of all classes and whether or not they've been checked in the filter
 
     private nameFilter: string = "";
     private schoolFilter: string = "None";
@@ -39,11 +39,15 @@ export class SpellbookComponent implements OnInit {
                 return a[`SPELL_NAME`].localeCompare(b[`SPELL_NAME`])
             });
             this.classes = [];
-            res.forEach(element => {
+            res.forEach(element => { // For each spell returned
+                // Get the classes that can learn the spell
                 let subscription = this.api.GET(`/spells/${element[`SPELL_NAME`]}/classes`).subscribe(res2 => {
                     element[`classes`] = [];
+                    // For each one of those classes
                     res2.forEach(item => {
+                        // If it's not already in the classes array, add it
                         if(!this.classes[item[`CLASS_NAME`]]) this.classes[item[`CLASS_NAME`]] = false;
+                        // And attach the class to the spell object
                         element[`classes`].push(item[`CLASS_NAME`])
                     });
                     subscription.unsubscribe();
