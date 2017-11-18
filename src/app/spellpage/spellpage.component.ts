@@ -13,8 +13,10 @@ const models = require(`../shared/models/models`);
 })
 export class SpellpageComponent implements OnInit {
     private spell: {} = models.spell;
+    private classes: [{}];
 
     private spellSubcription: Subscription;
+    private classSubscription: Subscription;
 
     constructor(private api: ApiService, private route: ActivatedRoute) { }
 
@@ -23,9 +25,13 @@ export class SpellpageComponent implements OnInit {
         this.spellSubcription = this.api.GET(`/spells/${this.route.snapshot.params[`spell`]}`).subscribe(res => {
             this.spell = res;
         });
+        this.classSubscription = this.api.GET(`/spells/${this.route.snapshot.params[`spell`]}/classes`).subscribe(res => {
+            this.classes = res;
+        });
     }
 
     ngOnDestroy(){
         this.spellSubcription.unsubscribe();
+        this.classSubscription.unsubscribe();
     }
 }

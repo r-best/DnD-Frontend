@@ -7,4 +7,5 @@
     <p>Casting Time: {{spell.CAST_TIME}}</p>
     <p>School: {{spell.SCHOOL}}</p>
     <p>Requires Concentration?: {{spell.CONCENTRATION ? 'Yes' : 'No'}}</p>
+    <p>Classes that can learn this spell:<span *ngFor="let class of classes"> {{class.CLASS_NAME}}</span></p>
 </div>
