@@ -19,12 +19,16 @@ Requires Concentration?
 </select><br />
 Classes:<br />
 <label *ngFor="let class of classes | keys">
-    <input type="checkbox" [(ngModel)]="classes[class]"/>
+    <input type="checkbox" [(ngModel)]="classes[class]" />
     {{class}} 
-</label>
+</label><br />
+Spell Requirements:<br />
+<label><input type="checkbox" [(ngModel)]="VSMFilter['verbal']" />verbal </label>
+<label><input type="checkbox" [(ngModel)]="VSMFilter['somatic']" />somatic </label>
+<label><input type="checkbox" [(ngModel)]="VSMFilter['material']" />material </label>
 <div class="container" *ngFor="let level of spells; let i = index" [attr.data-index]="i">
     <h4>Level {{i}}</h4>
-    <div class="container" *ngFor="let spell of spells[i] | filterspells:nameFilter:schoolFilter:concentrationFilter:classes">
+    <div class="container" *ngFor="let spell of spells[i] | filterspells:nameFilter:schoolFilter:concentrationFilter:classes:VSMFilter">
         <a class="btn" href="/spellbook/{{spell.SPELL_NAME}}">{{spell.SPELL_NAME}}</a>
     </div>
 </div>

@@ -28,6 +28,11 @@ export class SpellbookComponent implements OnInit {
     private nameFilter: string = "";
     private schoolFilter: string = "None";
     private concentrationFilter: string = "N/A";
+    private VSMFilter = {
+        verbal: false,
+        somatic: false,
+        material: false
+    };
 
     private spellSubscription: Subscription;
 
