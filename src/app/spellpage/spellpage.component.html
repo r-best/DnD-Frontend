@@ -7,5 +7,7 @@
     <p>Casting Time: {{spell.CAST_TIME}}</p>
     <p>School: {{spell.SCHOOL}}</p>
     <p>Requires Concentration?: {{spell.CONCENTRATION ? 'Yes' : 'No'}}</p>
+    <p>Requirements: <span *ngIf="spell.VERBAL">V</span><span *ngIf="spell.SOMATIC">S</span><span *ngIf="spell.MATERIALS !== null">M</span></p>
+    <p *ngIf="spell.MATERIALS !== null">Materials: {{spell.MATERIALS}}</p>
     <p>Classes that can learn this spell:<span *ngFor="let class of classes"> {{class.CLASS_NAME}}</span></p>
 </div>
