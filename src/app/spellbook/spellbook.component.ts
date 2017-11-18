@@ -30,7 +30,6 @@ export class SpellbookComponent implements OnInit {
     private concentrationFilter: string = "N/A";
 
     private spellSubscription: Subscription;
-    private classesSubscription: Subscription;
 
     constructor(private api: ApiService) { }
 
@@ -39,23 +38,18 @@ export class SpellbookComponent implements OnInit {
             res.sort((a, b) => {
                 return a[`SPELL_NAME`].localeCompare(b[`SPELL_NAME`])
             });
+            this.classes = [];
             res.forEach(element => {
                 let subscription = this.api.GET(`/spells/${element[`SPELL_NAME`]}/classes`).subscribe(res2 => {
                     element[`classes`] = [];
                     res2.forEach(item => {
+                        if(!this.classes[item[`CLASS_NAME`]]) this.classes[item[`CLASS_NAME`]] = false;
                         element[`classes`].push(item[`CLASS_NAME`])
                     });
                     subscription.unsubscribe();
                 });
                 this.spells[element[`LV`]].push(element);
             });
-        });
-        this.classesSubscription = this.api.GET(`/classes`).subscribe(res => {
-            this.classes = [];
-            res.forEach(element => {
-                this.classes[element[`CLASS_NAME`]] = false;
-            });
-            console.log(this.classes)
         });
     }
 
