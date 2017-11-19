@@ -1,4 +1,14 @@
 <h1>{{player.CHARACTER_NAME}}</h1>
+<p>Race: {{player.RACE_NAME}}</p>
+<div *ngIf="levels.length == 1">
+    <p>Class: {{levels[0]['CLASS_NAME']}} level {{levels[0]['LV']}}</p>
+</div>
+<div *ngIf="levels.length > 1">
+    <p>Classes: </p>
+    <ul>
+        <li *ngFor="let class of levels">{{class['CLASS_NAME']}} level {{class['LV']}}</li>
+    </ul>
+</div>
 <p>Alignment: {{player.ALIGNMENT}}</p>
 <p>AC: {{player.AC}}</p>
 <p>Max HP: {{player.MAX_HP}}</p>

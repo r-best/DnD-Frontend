@@ -25,3 +25,8 @@ exports.spell = {
     SCHOOL: `Loading`,
     CONCENTRATION: `Loading`,
 };
+
+exports.playerLevel = {
+    CLASS_NAME: `Loading`,
+    LV: `Loading`
+}
