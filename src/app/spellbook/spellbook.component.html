@@ -1,31 +1,49 @@
-Filter by Name: <input type="text" [(ngModel)]="nameFilter"/><br />
-Filter by School:
-<select [(ngModel)]="schoolFilter">
-    <option>None</option>
-    <option>Abjuration</option>
-    <option>Conjuration</option>
-    <option>Divination</option>
-    <option>Enchantment</option>
-    <option>Evocation</option>
-    <option>Illusion</option>
-    <option>Necromancy</option>
-    <option>Transmutation</option>
-</select><br />
-Requires Concentration?
-<select [(ngModel)]="concentrationFilter">
-    <option>N/A</option>
-    <option>Yes</option>
-    <option>No</option>
-</select><br />
-Classes:<br />
-<label *ngFor="let class of classes | keys">
-    <input type="checkbox" [(ngModel)]="classes[class]" />
-    {{class}} 
-</label><br />
-Spell Requirements:<br />
-<label><input type="checkbox" [(ngModel)]="VSMFilter['verbal']" />verbal </label>
-<label><input type="checkbox" [(ngModel)]="VSMFilter['somatic']" />somatic </label>
-<label><input type="checkbox" [(ngModel)]="VSMFilter['material']" />material </label>
+<div class="row justify-content-start">
+    <div class="col-5 border">
+        Filter by Name: <input type="text" [(ngModel)]="nameFilter"/>
+    </div>
+    <div class="col-5 border">
+        Filter by School:
+        <select [(ngModel)]="schoolFilter">
+            <option>None</option>
+            <option>Abjuration</option>
+            <option>Conjuration</option>
+            <option>Divination</option>
+            <option>Enchantment</option>
+            <option>Evocation</option>
+            <option>Illusion</option>
+            <option>Necromancy</option>
+            <option>Transmutation</option>
+        </select>
+    </div>
+</div>
+<div class="row justify-content-start">
+    <div class="col-10 border">
+        Requires Concentration?
+        <select [(ngModel)]="concentrationFilter">
+            <option>N/A</option>
+            <option>Yes</option>
+            <option>No</option>
+        </select>
+    </div>
+</div>
+<div class="row justify-content-start">
+    <div class="col-5 border">
+        Classes:<br />
+        <div *ngFor="let class of classes | keys">
+            <label>
+                <input type="checkbox" [(ngModel)]="classes[class]" />
+                {{class}}
+            </label>
+        </div>
+    </div>
+    <div class="col-5 border">
+        Spell Requirements:<br />
+        <label><input type="checkbox" [(ngModel)]="VSMFilter['verbal']" />verbal</label><br />
+        <label><input type="checkbox" [(ngModel)]="VSMFilter['somatic']" />somatic</label><br />
+        <label><input type="checkbox" [(ngModel)]="VSMFilter['material']" />material</label><br />
+    </div>
+</div>
 <div class="container" *ngFor="let level of spells; let i = index" [attr.data-index]="i">
     <h4>Level {{i}}</h4>
     <div class="container" *ngFor="let spell of spells[i] | filterspells:nameFilter:schoolFilter:concentrationFilter:classes:VSMFilter">
