@@ -1,22 +1,68 @@
+<div class="row justify-content-center">
+    <button class="btn btn-primary">Level Up</button>
+</div>
 <h1>{{player.CHARACTER_NAME}}</h1>
-<p>Race: {{player.RACE_NAME}}</p>
-<div *ngIf="levels.length == 1">
-    <p>Class: {{levels[0]['CLASS_NAME']}} level {{levels[0]['LV']}}</p>
+<div class="row">
+    <div class="col border">
+        <p>Race: {{player.RACE_NAME}}</p>
+        <p>Alignment: {{player.ALIGNMENT}}</p>
+        <div *ngIf="levels.length == 1">
+            <p>Class: {{levels[0]['CLASS_NAME']}} level {{levels[0]['LV']}}</p>
+        </div>
+        <div *ngIf="levels.length > 1">
+            <p>Classes: </p>
+            <ul>
+                <li *ngFor="let class of levels">{{class['CLASS_NAME']}} level {{class['LV']}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col border">
+        <p>AC: {{player.AC}}</p>
+        <p>Max HP: {{player.MAX_HP}}</p>
+        <p>Speed: {{player.SPD}}</p>
+        <p>Inspiration: {{player.INSP}}</p>
+    </div>
+    <div class="col border">
+        <label>Strength: {{player.STR}} (<b>{{getModifier(player.STR)}}</b>)</label><br />
+        <label>Dexterity: {{player.DEX}} (<b>{{getModifier(player.DEX)}}</b>)</label><br />
+        <label>Constitution: {{player.CON}} (<b>{{getModifier(player.CON)}}</b>)</label><br />
+        <label>Intelligence: {{player.INT}} (<b>{{getModifier(player.INT)}}</b>)</label><br />
+        <label>Wisdom: {{player.WIS}} (<b>{{getModifier(player.WIS)}}</b>)</label><br />
+        <label>Charisma: {{player.CHA}} (<b>{{getModifier(player.CHA)}}</b>)</label><br />
+    </div>
 </div>
-<div *ngIf="levels.length > 1">
-    <p>Classes: </p>
-    <ul>
-        <li *ngFor="let class of levels">{{class['CLASS_NAME']}} level {{class['LV']}}</li>
-    </ul>
+<div class="row">
+    <div class="col border">
+        <h2>Spells Known:</h2>
+        <div *ngFor="let level of spells; let i = index" [attr.data-index]="i">
+            <div *ngIf="level.length > 0">
+                <h4>Level {{i}}</h4>
+                <div *ngFor="let spell of spells[i]">
+                        <a class="btn" href="/spellbook/{{spell.SPELL_NAME}}">{{spell.SPELL_NAME}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col border">
+        <h2>Abilities:</h2>
+        <p *ngFor="let ability of abilities">{{ability['ABILITY_NAME']}}: {{ability['DESCR']}}</p>
+    </div>
 </div>
-<p>Alignment: {{player.ALIGNMENT}}</p>
-<p>AC: {{player.AC}}</p>
-<p>Max HP: {{player.MAX_HP}}</p>
-<p>Speed: {{player.SPD}}</p>
-<p>Inspiration: {{player.INSP}}</p>
-<p>Strength: {{player.STR}}</p>
-<p>Dexterity: {{player.DEX}}</p>
-<p>Constitution: {{player.CON}}</p>
-<p>Intelligence: {{player.INT}}</p>
-<p>Wisdom: {{player.WIS}}</p>
-<p>Charisma: {{player.CHA}}</p>
+<div class="row">
+    <div class="col border">
+        <h2>Attacks:</h2>
+        <div *ngFor="let attack of attacks">
+            {{attack['ATTACK_NAME']}}:
+            <label *ngIf="attack['ATK_BONUS']">+{{attack['ATK_BONUS']}} to attack</label><br />
+            <label *ngIf="attack['DAMAGE']">{{attack['DAMAGE']}}</label>
+            <label *ngIf="attack['DMG_TYPE']"> {{attack['DMG_TYPE']}} damage</label><br />
+            {{attack['DESCR']}}
+        </div>
+    </div>
+    <div class="col border">
+        <h2>Items:</h2>
+        <div *ngFor="let item of items">
+            {{item['ITEM_NAME']}} x{{item['QUANTITY']}}<label *ngIf="item['DESCR']">: {{item['DESCR']}}</label>
+        </div>
+    </div>
+</div>

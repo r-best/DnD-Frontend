@@ -30,3 +30,22 @@ exports.playerLevel = {
     CLASS_NAME: `Loading`,
     LV: `Loading`
 }
+
+exports.ability = {
+    ABILITY_NAME: `Loading`,
+    DESCR: `Loading`
+}
+
+exports.attack = {
+    ATTACK_NAME: `Loading`,
+    DESCR: `Loading`,
+    ATK_BONUS: `Loading`,
+    DAMAGE: `Loading`,
+    DMG_TYPE: `Loading`
+}
+
+exports.item = {
+    ITEM_NAME: `Loading`,
+    DESCR: `Loading`,
+    QUANTITY: `Loading`
+}
