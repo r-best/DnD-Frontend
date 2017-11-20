@@ -31,40 +31,33 @@ export class PlayerInfoComponent implements OnInit {
         [], // Level 9 spells
     ];
 
-    private playerSubscription: Subscription;
-    private levelsSubscription: Subscription;
-    private abilitiesSubscription: Subscription;
-    private attacksSubscription: Subscription;
-    private itemsSubscription: Subscription;
-    private spellsSubscription: Subscription;
-
     constructor(private api: ApiService, private route: ActivatedRoute) { }
 
     ngOnInit() {
         this.campaign = this.route.snapshot.params[`campaign`];
         let playerName = this.route.snapshot.params[`player`];
-        this.playerSubscription = this.api.GET(`/campaigns/${this.campaign}/players/${playerName}`)
-            .subscribe((res)=>{
+        this.api.GET(`/campaigns/${this.campaign}/players/${playerName}`)
+            .then((res)=>{
                 this.player = res;
             });
-        this.levelsSubscription = this.api.GET(`/campaigns/${this.campaign}/players/${playerName}/level`)
-            .subscribe(res => {
+        this.api.GET(`/campaigns/${this.campaign}/players/${playerName}/level`)
+            .then(res => {
                 this.levels = res;
             });
-        this.abilitiesSubscription = this.api.GET(`/campaigns/${this.campaign}/players/${playerName}/abilities`)
-            .subscribe(res => {
+        this.api.GET(`/campaigns/${this.campaign}/players/${playerName}/abilities`)
+            .then(res => {
                 this.abilities = res;
             });
-        this.attacksSubscription = this.api.GET(`/campaigns/${this.campaign}/players/${playerName}/attacks`)
-            .subscribe(res => {
+        this.api.GET(`/campaigns/${this.campaign}/players/${playerName}/attacks`)
+            .then(res => {
                 this.attacks = res;
             });
-        this.itemsSubscription = this.api.GET(`/campaigns/${this.campaign}/players/${playerName}/items`)
-            .subscribe(res => {
+        this.api.GET(`/campaigns/${this.campaign}/players/${playerName}/items`)
+            .then(res => {
                 this.items = res;
             });
-        this.spellsSubscription = this.api.GET(`/campaigns/${this.campaign}/players/${playerName}/spells`)
-            .subscribe(res => {
+        this.api.GET(`/campaigns/${this.campaign}/players/${playerName}/spells`)
+            .then(res => {
                 res.sort((a, b) => {
                     return a[`SPELL_NAME`].localeCompare(b[`SPELL_NAME`])
                 });
@@ -73,15 +66,6 @@ export class PlayerInfoComponent implements OnInit {
                     this.spells[element[`LV`]].push(element);
                 });
             });
-    }
-
-    ngOnDestroy(){
-        this.playerSubscription.unsubscribe();
-        this.levelsSubscription.unsubscribe();
-        this.abilitiesSubscription.unsubscribe();
-        this.attacksSubscription.unsubscribe();
-        this.itemsSubscription.unsubscribe();
-        this.spellsSubscription.unsubscribe();
     }
 
     getModifier(score: number): string{

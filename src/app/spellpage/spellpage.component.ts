@@ -13,25 +13,17 @@ const models = require(`../shared/models/models`);
 })
 export class SpellpageComponent implements OnInit {
     private spell: {} = models.spell;
-    private classes: [{}];
-
-    private spellSubcription: Subscription;
-    private classSubscription: Subscription;
+    private classes: {}[];
 
     constructor(private api: ApiService, private route: ActivatedRoute) { }
 
     ngOnInit() {
         console.log(`/spells/${this.route.snapshot.params[`spell`]}`)
-        this.spellSubcription = this.api.GET(`/spells/${this.route.snapshot.params[`spell`]}`).subscribe(res => {
+        this.api.GET(`/spells/${this.route.snapshot.params[`spell`]}`).then(res => {
             this.spell = res;
         });
-        this.classSubscription = this.api.GET(`/spells/${this.route.snapshot.params[`spell`]}/classes`).subscribe(res => {
+        this.api.GET(`/spells/${this.route.snapshot.params[`spell`]}/classes`).then(res => {
             this.classes = res;
         });
-    }
-
-    ngOnDestroy(){
-        this.spellSubcription.unsubscribe();
-        this.classSubscription.unsubscribe();
     }
 }

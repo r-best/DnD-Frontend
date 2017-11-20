@@ -11,12 +11,12 @@ export class ApiService {
 
     constructor(private http: Http) { }
 
-    GET(route: string): Observable<[{}]>{
+    GET(route: string): Promise<{}[]>{
         return this.http.get(`${apiAddress}${route}`)
             .map((res: Response) => {
-                console.log(res.json())
-                return res.json()
-            });
+                console.log(res.json());
+                return res.json();
+            }).toPromise();
             // .catch((err, observable) => {
             //     console.error(err)
             //     return null;

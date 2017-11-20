@@ -34,19 +34,17 @@ export class SpellbookComponent implements OnInit {
         material: false
     };
 
-    private spellSubscription: Subscription;
-
     constructor(private api: ApiService) { }
 
     ngOnInit() {
-        this.spellSubscription = this.api.GET(`/spells`).subscribe((res)=>{
+        this.api.GET(`/spells`).then((res)=>{
             res.sort((a, b) => {
                 return a[`SPELL_NAME`].localeCompare(b[`SPELL_NAME`])
             });
             this.classes = [];
             res.forEach(element => { // For each spell returned
                 // Get the classes that can learn the spell
-                let subscription = this.api.GET(`/spells/${element[`SPELL_NAME`]}/classes`).subscribe(res2 => {
+                this.api.GET(`/spells/${element[`SPELL_NAME`]}/classes`).then(res2 => {
                     element[`classes`] = [];
                     // For each one of those classes
                     res2.forEach(item => {
@@ -55,14 +53,9 @@ export class SpellbookComponent implements OnInit {
                         // And attach the class to the spell object
                         element[`classes`].push(item[`CLASS_NAME`])
                     });
-                    subscription.unsubscribe();
                 });
                 this.spells[element[`LV`]].push(element);
             });
         });
-    }
-
-    ngOnDestroy(){
-        this.spellSubscription.unsubscribe();
     }
 }

@@ -10,22 +10,16 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class CampaignsComponent implements OnInit {
     private campaigns;
-    
-    private campaignSubscription: Subscription;
 
     constructor(private api: ApiService) { }
 
     ngOnInit() {
-        this.campaignSubscription = this.api.GET(`/campaigns`).subscribe((res)=>{
+        this.refreshCampaignList();
+    }
+
+    refreshCampaignList(){
+        this.api.GET(`/campaigns`).then((res)=>{
             this.campaigns = res;
         });
-    }
-
-    ngOnDestroy(){
-        this.campaignSubscription.unsubscribe();
-    }
-
-    confirmDeleteCampaign(){
-        alert(`I havent implemented this yet be patient`);
     }
 }

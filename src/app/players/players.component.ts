@@ -13,9 +13,7 @@ const models = require(`../shared/models/models`);
 })
 export class PlayersComponent implements OnInit {
     private campaign: string;
-    private players: {};
-    
-    private playersSubscription: Subscription;
+    private players: {}[];
 
     constructor(private api: ApiService, private route: ActivatedRoute) { }
 
@@ -23,13 +21,9 @@ export class PlayersComponent implements OnInit {
         this.campaign = this.route.snapshot.params[`campaign`];
         console.log(`Campaign: ${this.campaign}`)
         console.log(`/campaigns/${this.route.snapshot.params[`campaign`]}`)
-        this.playersSubscription = this.api.GET(`/campaigns/${this.route.snapshot.params[`campaign`]}/players`).subscribe((res)=>{
+        this.api.GET(`/campaigns/${this.route.snapshot.params[`campaign`]}/players`).then((res)=>{
             this.players = res;
         });
-    }
-
-    ngOnDestroy(){
-        this.playersSubscription.unsubscribe();
     }
     
     confirmDeletePlayer(){
