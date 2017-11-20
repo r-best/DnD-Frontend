@@ -1,3 +1,13 @@
-<div *ngFor="let campaign of campaigns">
-    <a class="btn" href="/campaigns/{{campaign.CAMPAIGN_NAME}}">{{campaign.CAMPAIGN_NAME}}</a>
+<div class="row justify-content-start mb-4">
+    <div class="col-10">
+        <button class="btn btn-primary">+New Campaign</button>
+    </div>
+</div>
+<div *ngFor="let campaign of campaigns" class="row justify-content-between mb-1">
+    <div class="col-7">
+        <a class="btn" href="/campaigns/{{campaign.CAMPAIGN_NAME}}">{{campaign.CAMPAIGN_NAME}}</a>
+    </div>
+    <div class="col-3 text-right">
+        <button class="btn btn-secondary" (click)="confirmDeleteCampaign()">This is the trash button</button>
+    </div>
 </div>

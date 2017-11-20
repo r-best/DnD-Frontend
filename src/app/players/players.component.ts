@@ -31,4 +31,8 @@ export class PlayersComponent implements OnInit {
     ngOnDestroy(){
         this.playersSubscription.unsubscribe();
     }
+    
+    confirmDeletePlayer(){
+        alert(`I havent implemented this yet be patient`);
+    }
 }

@@ -24,4 +24,8 @@ export class CampaignsComponent implements OnInit {
     ngOnDestroy(){
         this.campaignSubscription.unsubscribe();
     }
+
+    confirmDeleteCampaign(){
+        alert(`I havent implemented this yet be patient`);
+    }
 }
