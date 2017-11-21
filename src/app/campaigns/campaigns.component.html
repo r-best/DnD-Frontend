@@ -9,7 +9,7 @@
             <a class="btn" href="/campaigns/{{campaign.CAMPAIGN_NAME}}">{{campaign.CAMPAIGN_NAME}}</a>
         </div>
         <div class="col-3 text-right">
-            <button class="btn btn-secondary" (click)="confirmDeleteCampaign()">This is the trash button</button>
+            <button class="btn btn-secondary" (click)="confirmDeleteCampaign(campaign.CAMPAIGN_NAME)">This is the trash button</button>
         </div>
     </div>
 </div>

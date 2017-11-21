@@ -27,8 +27,11 @@ export class CampaignsComponent implements OnInit {
         });
     }
     
-    confirmDeleteCampaign(){
-        alert(`I havent implemented this yet be patient`);
+    confirmDeleteCampaign(name: string){
+        if(confirm(`Are you sure you want to delete '${name}'?`))
+            this.api.DEL(`/campaigns/${name}`).then(res => {
+                this.refreshCampaignList();
+            });
     }
 
     openNewCampaignDialogue(){
@@ -46,12 +49,12 @@ export class CampaignsComponent implements OnInit {
 
     createCampaign(name: string){
         if(new RegExp("^[A-Za-z0-9-\\s]+$").test(name)){
-            // this.api.PUT(`/campaigns/${name}`, {}).then(res => {
-                
-            // });
+            this.api.PUT(`/campaigns/${name}`, {}).then(res => {
+                this.toast.showToast(`alert-success`, `Campaign '${name}' successfully added!`);
+                this.closeNewCampaignDialogue();
+            });
         }
         else
             this.toast.showToast(`alert-danger`, `Please make sure your entry contains only letters, numbers, hyphens, and spaces`);
-            
     }
 }
