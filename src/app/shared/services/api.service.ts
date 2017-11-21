@@ -14,7 +14,7 @@ export class ApiService {
     GET(route: string): Promise<{}[]>{
         return this.http.get(`${apiAddress}${route}`)
             .map((res: Response) => {
-                console.log(`GET response:`, res.json());
+                console.log(`GET ${route}`, res.json());
                 return res.json();
             }).toPromise();
             // .catch((err, observable) => {
@@ -26,7 +26,7 @@ export class ApiService {
     PUT(route: string, body: {}): Promise<string>{
         return this.http.put(`${apiAddress}${route}`, JSON.stringify(body))
         .map((res: Response) => {
-            console.log(`PUT response:`, res.json());
+            console.log(`PUT ${route}`, res.json());
             return res.json();
         }).toPromise();
     }
@@ -34,7 +34,7 @@ export class ApiService {
     DEL(route: string): Promise<string>{
         return this.http.delete(`${apiAddress}${route}`)
         .map((res: Response) => {
-            console.log(`DELETE response:`, res.json());
+            console.log(`DELETE ${route}`, res.json());
             return res.json();
         }).toPromise();
     }
