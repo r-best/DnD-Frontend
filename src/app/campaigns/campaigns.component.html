@@ -1,13 +1,27 @@
-<div class="row justify-content-start mb-4">
-    <div class="col-10">
-        <button class="btn btn-primary">+New Campaign</button>
+<div *ngIf="!isNewCampaignDialogueOpen">
+    <div class="row justify-content-start mb-4">
+        <div class="col-10">
+            <button class="btn btn-primary" (click)="openNewCampaignDialogue()">+New Campaign</button>
+        </div>
+    </div>
+    <div *ngFor="let campaign of campaigns" class="row justify-content-between mb-1">
+        <div class="col-7">
+            <a class="btn" href="/campaigns/{{campaign.CAMPAIGN_NAME}}">{{campaign.CAMPAIGN_NAME}}</a>
+        </div>
+        <div class="col-3 text-right">
+            <button class="btn btn-secondary" (click)="confirmDeleteCampaign()">This is the trash button</button>
+        </div>
     </div>
 </div>
-<div *ngFor="let campaign of campaigns" class="row justify-content-between mb-1">
-    <div class="col-7">
-        <a class="btn" href="/campaigns/{{campaign.CAMPAIGN_NAME}}">{{campaign.CAMPAIGN_NAME}}</a>
+<div *ngIf="isNewCampaignDialogueOpen">
+    <div class="row justify-content-between">
+        <input type="text" #newCampaignName/>
     </div>
-    <div class="col-3 text-right">
-        <button class="btn btn-secondary" (click)="confirmDeleteCampaign()">This is the trash button</button>
+    <div class="row justify-content-between">
+        <button type="submit" class="btn btn-primary" (click)="createCampaign(newCampaignName.value)">Submit</button>
+        <button class="btn btn-secondary" (click)="closeNewCampaignDialogue()">Cancel</button>
+    </div>
+    <div *ngIf="badEntryAlert" class="row justify-content-between">
+        <div class="alert alert-danger">Please make sure your entry contains only letters, numbers, hyphens, and spaces</div>
     </div>
 </div>
