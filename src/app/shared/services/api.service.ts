@@ -14,12 +14,20 @@ export class ApiService {
     GET(route: string): Promise<{}[]>{
         return this.http.get(`${apiAddress}${route}`)
             .map((res: Response) => {
-                console.log(res.json());
+                console.log(`GET response: ${res.json()}`);
                 return res.json();
             }).toPromise();
             // .catch((err, observable) => {
             //     console.error(err)
             //     return null;
             // });
+    }
+    
+    PUT(route: string, body: {}): Promise<string>{
+        return this.http.put(`${apiAddress}${route}`, JSON.stringify(body))
+        .map((res: Response) => {
+            console.log(`PUT response: ${res.json()}`);
+            return res.json();
+        }).toPromise();
     }
 }
