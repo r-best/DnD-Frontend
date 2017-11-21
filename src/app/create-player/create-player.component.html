@@ -1,0 +1,34 @@
+<div class="row">
+    <h2>Add new player to {{campaign}}</h2>
+</div>
+<div class="row">
+    Name:<input type="text" [(ngModel)]="inputName" (ngModelChange)="verifyName()"/>
+</div>
+<div *ngIf="usedNameAlertVisible" class="row">
+    <label class="alert alert-danger m-0">'{{inputName}}' already exists in this campaign</label>
+</div>
+<div class="row">
+    Race:
+    <select [(ngModel)]="inputRace">
+        <option *ngFor="let race of races">{{race['RACE_NAME']}}</option>
+    </select>
+</div>
+<div class="row">
+    Class:
+    <select [(ngModel)]="inputClass">
+        <option *ngFor="let class of classes">{{class['CLASS_NAME']}}</option>
+    </select>
+</div>
+<div class="row">
+    <select [(ngModel)]="inputAlignment">
+        <option>Lawful Good</option>
+        <option>Lawful Neutral</option>
+        <option>Lawful Evil</option>
+        <option>Neutral Good</option>
+        <option>True Neutral</option>
+        <option>Neutral Evil</option>
+        <option>Chaotic Good</option>
+        <option>Chaotic Neutral</option>
+        <option>Chaotic Evil</option>
+    </select>
+</div>

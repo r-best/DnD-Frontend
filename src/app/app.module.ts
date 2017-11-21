@@ -17,6 +17,7 @@ import { SpellpageComponent } from './spellpage/spellpage.component';
 import { CampaignsComponent } from './campaigns/campaigns.component';
 import { PlayersComponent } from './players/players.component';
 import { PlayerInfoComponent } from './player-info/player-info.component';
+import { CreatePlayerComponent } from './create-player/create-player.component';
 
 const routes: Routes = [
     {path: ``, redirectTo: `/dashboard`, pathMatch: `full`},
@@ -25,6 +26,7 @@ const routes: Routes = [
     {path: `spellbook/:spell`, component: SpellpageComponent},
     {path: `campaigns`, component: CampaignsComponent},
     {path: `campaigns/:campaign`, component: PlayersComponent},
+    {path: `campaigns/:campaign/createPlayer`, component: CreatePlayerComponent},
     {path: `campaigns/:campaign/:player`, component: PlayerInfoComponent}
 ];
 
@@ -43,6 +45,7 @@ const routes: Routes = [
         CampaignsComponent,
         PlayersComponent,
         PlayerInfoComponent,
+        CreatePlayerComponent,
         SpellFilter,
         KeysFilter
     ],

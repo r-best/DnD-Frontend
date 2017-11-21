@@ -1,6 +1,6 @@
 <div class="row justify-content-start mb-4">
     <div class="col-10">
-        <button class="btn btn-primary">+New Player</button>
+        <a class="btn btn-primary" href="/campaigns/{{campaign}}/createPlayer">+New Player</a>
     </div>
 </div>
 <div *ngFor="let player of players" class="row justify-content-between mb-1">
@@ -8,6 +8,6 @@
         <a class="btn" href="/campaigns/{{campaign}}/{{player.CHARACTER_NAME}}">{{player.CHARACTER_NAME}}</a>
     </div>
     <div class="col-3 text-right">
-        <button class="btn btn-secondary" (click)="confirmDeletePlayer()">This is the trash button</button>
+        <button class="btn btn-secondary" (click)="confirmDeletePlayer(player.CHARACTER_NAME)">This is the trash button</button>
     </div>
 </div>

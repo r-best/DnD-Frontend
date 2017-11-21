@@ -6,10 +6,10 @@ import { ActivatedRoute } from '@angular/router';
 const models = require(`../shared/models/models`);
 
 @Component({
-  selector: 'app-players',
-  templateUrl: './players.component.html',
-  styleUrls: ['./players.component.css'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-players',
+    templateUrl: './players.component.html',
+    styleUrls: ['./players.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class PlayersComponent implements OnInit {
     private campaign: string;
@@ -19,14 +19,20 @@ export class PlayersComponent implements OnInit {
 
     ngOnInit() {
         this.campaign = this.route.snapshot.params[`campaign`];
-        console.log(`Campaign: ${this.campaign}`)
-        console.log(`/campaigns/${this.route.snapshot.params[`campaign`]}`)
-        this.api.GET(`/campaigns/${this.route.snapshot.params[`campaign`]}/players`).then((res)=>{
+        this.refreshPlayerList();
+    }
+
+    refreshPlayerList(){
+        this.api.GET(`/campaigns/${this.campaign}/players`).then((res)=>{
             this.players = res;
         });
     }
     
-    confirmDeletePlayer(){
-        alert(`I havent implemented this yet be patient`);
+    confirmDeletePlayer(name: string){
+        if(confirm(`Are you sure you want to delete '${name}'?`))
+            alert(`I havent implemented this yet be patient`);
+            // this.api.DEL(`/campaigns/${this.campaign}/players/${name}`).then(res => {
+            //     this.refreshPlayerList();
+            // });
     }
 }
