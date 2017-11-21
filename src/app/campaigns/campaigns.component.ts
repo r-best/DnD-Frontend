@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApiService } from '../shared/services/api.service';
 import { Subscription } from 'rxjs/Subscription';
+import { ToastService } from '../shared/services/toast.service';
 
 @Component({
   selector: 'app-campaigns',
@@ -13,9 +14,8 @@ export class CampaignsComponent implements OnInit {
 
     private isNewCampaignDialogueOpen: boolean = false;
     private newCampaignNameField: string = "";
-    private badEntryAlert: boolean = false;
 
-    constructor(private api: ApiService) { }
+    constructor(private api: ApiService, private toast: ToastService) { }
 
     ngOnInit() {
         this.refreshCampaignList();
@@ -40,21 +40,18 @@ export class CampaignsComponent implements OnInit {
         if(this.isNewCampaignDialogueOpen){
             this.isNewCampaignDialogueOpen = false;
             this.newCampaignNameField = "";
-            this.badEntryAlert = false;
             this.refreshCampaignList();
         }
     }
 
     createCampaign(name: string){
         if(new RegExp("^[A-Za-z0-9-\\s]+$").test(name)){
-            if(this.badEntryAlert)
-                this.badEntryAlert = false;
             // this.api.PUT(`/campaigns/${name}`, {}).then(res => {
                 
             // });
         }
         else
-            this.badEntryAlert = true;
+            this.toast.showToast(`alert-danger`, `Please make sure your entry contains only letters, numbers, hyphens, and spaces`);
             
     }
 }

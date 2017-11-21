@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
 import { ApiService } from './shared/services/api.service';
+import { ToastService } from './shared/services/toast.service';
 
 import { SpellFilter } from './shared/filters/spell.filter';
 import { KeysFilter } from './shared/filters/keys.filter';
@@ -45,7 +46,7 @@ const routes: Routes = [
         SpellFilter,
         KeysFilter
     ],
-    providers: [ApiService],
+    providers: [ApiService, ToastService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
