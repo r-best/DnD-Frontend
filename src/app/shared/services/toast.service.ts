@@ -9,7 +9,7 @@ export class ToastService {
         var toast = document.getElementById(`toast`);
         if(!toast.className.includes(`show`)){
             toast.textContent = text;
-            toast.className = `alert ${alertClass} show`;
+            toast.className = `col alert ${alertClass} show`;
             setTimeout(() => {toast.className = toast.className.replace(` show`, ``)}, 3000);
         }
     }

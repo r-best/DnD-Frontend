@@ -1,11 +1,8 @@
 #toast {
     visibility: hidden;
-    min-width: 250px;
-    margin-left: -125px;
     text-align: center;
     position: fixed;
     z-index: 1;
-    left: 50%;
     bottom: 30px;
 }
 
