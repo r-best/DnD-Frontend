@@ -33,14 +33,13 @@
 </div>
 <div class="row">
     <div class="col border">
-        <h2>Spells Known:</h2>
-        <div *ngFor="let level of spells; let i = index" [attr.data-index]="i">
-            <div *ngIf="level.length > 0">
-                <h4>Level {{i}}</h4>
-                <div *ngFor="let spell of spells[i]">
-                        <a class="btn" href="/spellbook/{{spell.SPELL_NAME}}">{{spell.SPELL_NAME}}</a>
-                </div>
-            </div>
+        <h2>Attacks:</h2>
+        <div *ngFor="let attack of attacks">
+            {{attack['ATTACK_NAME']}}:
+            <label *ngIf="attack['ATK_BONUS']">+{{attack['ATK_BONUS']}} to attack</label><br />
+            <label *ngIf="attack['DAMAGE']">{{attack['DAMAGE']}}</label>
+            <label *ngIf="attack['DMG_TYPE']"> {{attack['DMG_TYPE']}} damage</label><br />
+            {{attack['DESCR']}}
         </div>
     </div>
     <div class="col border">
@@ -50,13 +49,30 @@
 </div>
 <div class="row">
     <div class="col border">
-        <h2>Attacks:</h2>
-        <div *ngFor="let attack of attacks">
-            {{attack['ATTACK_NAME']}}:
-            <label *ngIf="attack['ATK_BONUS']">+{{attack['ATK_BONUS']}} to attack</label><br />
-            <label *ngIf="attack['DAMAGE']">{{attack['DAMAGE']}}</label>
-            <label *ngIf="attack['DMG_TYPE']"> {{attack['DMG_TYPE']}} damage</label><br />
-            {{attack['DESCR']}}
+        <h2>Spells Known:</h2>
+        <div class="row justify-content-start">
+            <div class="col">
+                Requires Concentration?
+                <select [(ngModel)]="concentrationFilter">
+                    <option>N/A</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                </select><br />
+                Spell Requirements:<br />
+                <label><input type="checkbox" [(ngModel)]="VSMFilter['verbal']" />verbal</label><br />
+                <label><input type="checkbox" [(ngModel)]="VSMFilter['somatic']" />somatic</label><br />
+                <label><input type="checkbox" [(ngModel)]="VSMFilter['material']" />material</label><br />
+            </div>
+        </div>
+        <div class="row justify-content-start">
+            <div class="container" *ngFor="let level of spells; let i = index" [attr.data-index]="i">
+                <!-- <div *ngIf="level.length > 0"> -->
+                    <h4>Level {{i}}</h4>
+                    <div class="container" *ngFor="let spell of spells[i] | filterspells:null:null:null:null:VSMFilter">
+                            <a class="btn" href="/spellbook/{{spell.SPELL_NAME}}">{{spell.SPELL_NAME}}</a>
+                    </div>
+                <!-- </div> -->
+            </div>
         </div>
     </div>
     <div class="col border">

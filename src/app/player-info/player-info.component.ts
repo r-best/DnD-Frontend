@@ -30,6 +30,11 @@ export class PlayerInfoComponent implements OnInit {
         [], // Level 8 spells
         [], // Level 9 spells
     ];
+    private VSMFilter = {
+        verbal: false,
+        somatic: false,
+        material: false
+    };
 
     constructor(private api: ApiService, private route: ActivatedRoute) { }
 
