@@ -13,7 +13,7 @@ const models = require(`../shared/models/models.ts`);
 export class CreatePlayerComponent implements OnInit {
     private campaign: string;
     private existingPlayerNames: string[];
-    private races: {}[];
+    private races: {};
     private classes : {}[];
 
     private playerObj = {
@@ -42,7 +42,12 @@ export class CreatePlayerComponent implements OnInit {
         this.campaign = this.route.snapshot.params[`campaign`];
         this.refreshExistingPlayers();
         this.api.GET(`/races`).then(res => {
-            this.races = res;
+            let races = {};
+            for(let item of res){
+                races[item[`RACE_NAME`]] = item;
+            }
+            this.races = races;
+            this.rollScores();
         });
         this.api.GET(`/classes`).then(res => {
             this.classes = res;
@@ -56,6 +61,35 @@ export class CreatePlayerComponent implements OnInit {
                 this.existingPlayerNames.push(player[`CHARACTER_NAME`]);
             });
         });
+    }
+
+    getModifier(score: number): string{
+        let modifier = Math.floor((score - 10) / 2);
+        return modifier < 0 ? `${modifier}` : `+${modifier}`;
+    }
+
+    // Both min and max are inclusive
+    getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    getRaceScoreBonus(score: string){
+        return this.races[this.playerObj[`RACE_NAME`]][`BASE_${score}`];
+    }
+
+    rollScores(){
+        let scores = [`STR`, `DEX`, `CON`, `INT`, `WIS`, `CHA`];
+        for(let score of scores){
+            this.playerObj[score] = 0;
+            let rolls = [];
+            for(let i = 0; i < 4; i++)
+                rolls[i] = this.getRandomInt(1, 6);
+            for(let i = 0; i < 3; i++){
+                let highestIndex = rolls.indexOf(Math.max.apply(null, rolls));
+                this.playerObj[score] += rolls[highestIndex];
+                rolls.splice(highestIndex, 1);
+            }
+        }
     }
 
     verifyName(): boolean{

@@ -8,28 +8,42 @@
     <label class="alert alert-danger m-0">{{nameAlertText}}</label>
 </div>
 <div class="row">
-    Race:
-    <select [(ngModel)]="playerObj['RACE_NAME']">
-        <option *ngFor="let race of races">{{race['RACE_NAME']}}</option>
-    </select>
-</div>
-<div class="row">
-    Class:
-    <select [(ngModel)]="playerObj['CLASS_NAME']">
-        <option *ngFor="let class of classes">{{class['CLASS_NAME']}}</option>
-    </select>
-</div>
-<div class="row">
-    <select [(ngModel)]="playerObj['ALIGNMENT']">
-        <option>Lawful Good</option>
-        <option>Lawful Neutral</option>
-        <option>Lawful Evil</option>
-        <option>Neutral Good</option>
-        <option>True Neutral</option>
-        <option>Neutral Evil</option>
-        <option>Chaotic Good</option>
-        <option>Chaotic Neutral</option>
-        <option>Chaotic Evil</option>
-    </select>
+    <div class="col">
+        <div class="row">
+            Race:
+            <select [(ngModel)]="playerObj['RACE_NAME']">
+                <option *ngFor="let race of races | keys">{{race}}</option>
+            </select>
+        </div>
+        <div class="row">
+            Class:
+            <select [(ngModel)]="playerObj['CLASS_NAME']">
+                <option *ngFor="let class of classes">{{class['CLASS_NAME']}}</option>
+            </select>
+        </div>
+        <div class="row">
+            Alignment:
+            <select [(ngModel)]="playerObj['ALIGNMENT']">
+                <option>Lawful Good</option>
+                <option>Lawful Neutral</option>
+                <option>Lawful Evil</option>
+                <option>Neutral Good</option>
+                <option>True Neutral</option>
+                <option>Neutral Evil</option>
+                <option>Chaotic Good</option>
+                <option>Chaotic Neutral</option>
+                <option>Chaotic Evil</option>
+            </select>
+        </div>
+    </div>
+    <div class="col">
+        <label>Strength: {{playerObj['STR']+getRaceScoreBonus('STR')}} (<b>{{getModifier(playerObj['STR']+getRaceScoreBonus('STR'))}}</b>)</label><br />
+        <label>Dexterity: {{playerObj['DEX']+getRaceScoreBonus('DEX')}} (<b>{{getModifier(playerObj['DEX']+getRaceScoreBonus('DEX'))}}</b>)</label><br />
+        <label>Constitution: {{playerObj['CON']+getRaceScoreBonus('CON')}} (<b>{{getModifier(playerObj['CON']+getRaceScoreBonus('CON'))}}</b>)</label><br />
+        <label>Intelligence: {{playerObj['INT']+getRaceScoreBonus('INT')}} (<b>{{getModifier(playerObj['INT']+getRaceScoreBonus('INT'))}}</b>)</label><br />
+        <label>Wisdom: {{playerObj['WIS']+getRaceScoreBonus('WIS')}} (<b>{{getModifier(playerObj['WIS']+getRaceScoreBonus('WIS'))}}</b>)</label><br />
+        <label>Charisma: {{playerObj['CHA']+getRaceScoreBonus('CHA')}} (<b>{{getModifier(playerObj['CHA']+getRaceScoreBonus('CHA'))}}</b>)</label><br />
+        <button class="btn btn-secondary" (click)="rollScores()">Reroll scores</button>
+    </div>
 </div>
 <button type="submit" (click)="createPlayer()">Submit</button>
