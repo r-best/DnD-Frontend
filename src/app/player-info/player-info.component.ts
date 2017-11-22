@@ -74,7 +74,7 @@ export class PlayerInfoComponent implements OnInit {
     }
 
     getModifier(score: number): string{
-        let modifier = Math.floor(score/2) - 5;
-        return modifier < 0 ? `-${modifier}` : `+${modifier}`;
+        let modifier = Math.floor((score - 10) / 2);
+        return modifier < 0 ? `${modifier}` : `+${modifier}`;
     }
 }

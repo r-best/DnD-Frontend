@@ -2,25 +2,25 @@
     <h2>Add new player to {{campaign}}</h2>
 </div>
 <div class="row">
-    Name:<input type="text" [(ngModel)]="inputName" (ngModelChange)="verifyName()"/>
+    Name:<input type="text" [(ngModel)]="playerObj['CHARACTER_NAME']" (ngModelChange)="verifyName()"/>
 </div>
-<div *ngIf="usedNameAlertVisible" class="row">
-    <label class="alert alert-danger m-0">'{{inputName}}' already exists in this campaign</label>
+<div *ngIf="nameAlertVisible" class="row">
+    <label class="alert alert-danger m-0">{{nameAlertText}}</label>
 </div>
 <div class="row">
     Race:
-    <select [(ngModel)]="inputRace">
+    <select [(ngModel)]="playerObj['RACE_NAME']">
         <option *ngFor="let race of races">{{race['RACE_NAME']}}</option>
     </select>
 </div>
 <div class="row">
     Class:
-    <select [(ngModel)]="inputClass">
+    <select [(ngModel)]="playerObj['CLASS_NAME']">
         <option *ngFor="let class of classes">{{class['CLASS_NAME']}}</option>
     </select>
 </div>
 <div class="row">
-    <select [(ngModel)]="inputAlignment">
+    <select [(ngModel)]="playerObj['ALIGNMENT']">
         <option>Lawful Good</option>
         <option>Lawful Neutral</option>
         <option>Lawful Evil</option>
@@ -32,3 +32,4 @@
         <option>Chaotic Evil</option>
     </select>
 </div>
+<button type="submit" (click)="createPlayer()">Submit</button>
