@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApiService } from '../shared/services/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { UtilsService } from '../shared/services/utils.service';
 
 const models = require(`../shared/models/models`);
 
@@ -36,7 +37,7 @@ export class PlayerInfoComponent implements OnInit {
         material: false
     };
 
-    constructor(private api: ApiService, private route: ActivatedRoute) { }
+    constructor(private api: ApiService, private route: ActivatedRoute, private utils: UtilsService) { }
 
     ngOnInit() {
         this.campaign = this.route.snapshot.params[`campaign`];

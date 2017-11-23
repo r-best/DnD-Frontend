@@ -1,46 +1,61 @@
 <div class="row">
     <h2>Add new player to {{campaign}}</h2>
 </div>
-<div class="row">
-    <div class="col">
-        <div class="row">
-            Name:<input type="text" [(ngModel)]="playerObj['CHARACTER_NAME']" (ngModelChange)="verifyName()"/>
+<div class="container" *ngIf="!partOneComplete">
+    <h3>Part One: Basic Player Data</h3>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                Name:<input type="text" [(ngModel)]="playerObj['CHARACTER_NAME']" (ngModelChange)="verifyName()"/>
+            </div>
+            <div *ngIf="nameAlertVisible" class="row">
+                <label class="alert alert-danger m-0">{{nameAlertText}}</label>
+            </div>
+            <div class="row">
+                Race:
+                <select [(ngModel)]="playerObj['RACE_NAME']">
+                    <option *ngFor="let race of races | keys">{{race}}</option>
+                </select>
+            </div>
+            <div class="row">
+                Class:
+                <select [(ngModel)]="playerObj['CLASS_NAME']" (change)="rollHp()">
+                    <option *ngFor="let class of classes | keys">{{class}}</option>
+                </select>
+            </div>
+            <div class="row">
+                Alignment:
+                <select [(ngModel)]="playerObj['ALIGNMENT']">
+                    <option *ngFor="let alignment of alignments">{{alignment}}</option>
+                </select>
+            </div>
         </div>
-        <div *ngIf="nameAlertVisible" class="row">
-            <label class="alert alert-danger m-0">{{nameAlertText}}</label>
+        <div class="col">
+            <label>Strength: {{playerObj['STR']+getRaceScoreBonus('STR')}} (<b>{{utils.getModifier(playerObj['STR']+getRaceScoreBonus('STR'))}}</b>)</label><br />
+            <label>Dexterity: {{playerObj['DEX']+getRaceScoreBonus('DEX')}} (<b>{{utils.getModifier(playerObj['DEX']+getRaceScoreBonus('DEX'))}}</b>)</label><br />
+            <label>Constitution: {{playerObj['CON']+getRaceScoreBonus('CON')}} (<b>{{utils.getModifier(playerObj['CON']+getRaceScoreBonus('CON'))}}</b>)</label><br />
+            <label>Intelligence: {{playerObj['INT']+getRaceScoreBonus('INT')}} (<b>{{utils.getModifier(playerObj['INT']+getRaceScoreBonus('INT'))}}</b>)</label><br />
+            <label>Wisdom: {{playerObj['WIS']+getRaceScoreBonus('WIS')}} (<b>{{utils.getModifier(playerObj['WIS']+getRaceScoreBonus('WIS'))}}</b>)</label><br />
+            <label>Charisma: {{playerObj['CHA']+getRaceScoreBonus('CHA')}} (<b>{{utils.getModifier(playerObj['CHA']+getRaceScoreBonus('CHA'))}}</b>)</label><br />
+            <button class="btn btn-secondary" (click)="rollScores();rollHp()">Reroll scores</button>
         </div>
-        <div class="row">
-            Race:
-            <select [(ngModel)]="playerObj['RACE_NAME']">
-                <option *ngFor="let race of races | keys">{{race}}</option>
-            </select>
-        </div>
-        <div class="row">
-            Class:
-            <select [(ngModel)]="playerObj['CLASS_NAME']" (change)="updateClass()">
-                <option *ngFor="let class of classes | keys">{{class}}</option>
-            </select>
-        </div>
-        <div class="row">
-            Alignment:
-            <select [(ngModel)]="playerObj['ALIGNMENT']">
-                <option *ngFor="let alignment of alignments">{{alignment}}</option>
-            </select>
+        <div class="col">
+            <label>Speed: {{races ? races[playerObj['RACE_NAME']]['BASE_SPD'] : 0}}ft</label><br />
+            <label>AC: {{10+utils.getModifier(playerObj['DEX']+getRaceScoreBonus('DEX'))}}</label><br />
+            <label>HP: {{playerObj['MAX_HP']+utils.getModifier(playerObj['CON']+getRaceScoreBonus('CON'))}}</label>
         </div>
     </div>
-    <div class="col">
-        <label>Strength: {{playerObj['STR']+getRaceScoreBonus('STR')}} (<b>{{getModifier(playerObj['STR']+getRaceScoreBonus('STR'))}}</b>)</label><br />
-        <label>Dexterity: {{playerObj['DEX']+getRaceScoreBonus('DEX')}} (<b>{{getModifier(playerObj['DEX']+getRaceScoreBonus('DEX'))}}</b>)</label><br />
-        <label>Constitution: {{playerObj['CON']+getRaceScoreBonus('CON')}} (<b>{{getModifier(playerObj['CON']+getRaceScoreBonus('CON'))}}</b>)</label><br />
-        <label>Intelligence: {{playerObj['INT']+getRaceScoreBonus('INT')}} (<b>{{getModifier(playerObj['INT']+getRaceScoreBonus('INT'))}}</b>)</label><br />
-        <label>Wisdom: {{playerObj['WIS']+getRaceScoreBonus('WIS')}} (<b>{{getModifier(playerObj['WIS']+getRaceScoreBonus('WIS'))}}</b>)</label><br />
-        <label>Charisma: {{playerObj['CHA']+getRaceScoreBonus('CHA')}} (<b>{{getModifier(playerObj['CHA']+getRaceScoreBonus('CHA'))}}</b>)</label><br />
-        <button class="btn btn-secondary" (click)="rollScores();rollHp()">Reroll scores</button>
-    </div>
-    <div class="col">
-        <label>Speed: {{races ? races[playerObj['RACE_NAME']]['BASE_SPD'] : 0}}ft</label><br />
-        <label>AC: {{10+getModifier(playerObj['DEX']+getRaceScoreBonus('DEX'))}}</label><br />
-        <label>HP: {{playerObj['MAX_HP']+getModifier(playerObj['CON']+getRaceScoreBonus('CON'))}}</label>
-    </div>
+    <button type="submit" (click)="finalizePartOne()">Submit</button>
 </div>
-<button type="submit" (click)="createPlayer()">Submit</button>
+<div class="container" *ngIf="partOneComplete">
+    <h3>Part Two: Spells</h3>
+    <h4>Pick four cantrips:</h4>
+    <div class="row" *ngFor="let spell of learnableCantrips | keys">
+        <input type="checkbox" name="cantrips" [(ngModel)]="selectedCantrips[spell]" /><a class="btn" href="/spellbook/{{spell}}" target="blank">{{spell}}</a>
+    </div>
+    <h4>Pick two level 1 spells:</h4>
+    <div class="row" *ngFor="let spell of learnableSpells | keys">
+        <input type="checkbox" name="spells" [(ngModel)]="selectedSpells[spell]" /><a class="btn" href="/spellbook/{{spell}}" target="blank">{{spell}}</a>
+    </div>
+    <button type="submit" (click)="finalizePartTwo()">Submit</button>
+</div>

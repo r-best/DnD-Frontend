@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../shared/services/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastService } from '../shared/services/toast.service';
+import { UtilsService } from '../shared/services/utils.service';
 
 const models = require(`../shared/models/models.ts`);
 
@@ -15,6 +16,7 @@ export class CreatePlayerComponent implements OnInit {
     private existingPlayerNames: string[];
     private races: {};
     private classes : {};
+    private abilities: {};
     private alignments = [
         'Lawful Good',
         'Lawful Neutral',
@@ -41,12 +43,20 @@ export class CreatePlayerComponent implements OnInit {
         INT: 0,
         WIS: 0,
         CHA: 0,
+        ABILITIES: [],
+        SPELLS: []
     };
+
+    private partOneComplete: boolean = false;
+    private learnableCantrips = null;//
+    private learnableSpells = null; // Not used until part 2 starts, when player class is finalized
+    private selectedCantrips = null; //
+    private selectedSpells = null;
 
     private nameAlertVisible: boolean = false;
     private nameAlertText: string = ``;
 
-    constructor(private api: ApiService, private route: ActivatedRoute, private toast: ToastService) { }
+    constructor(private api: ApiService, private utils: UtilsService, private route: ActivatedRoute, private toast: ToastService) { }
 
     ngOnInit() {
         this.campaign = this.route.snapshot.params[`campaign`];
@@ -67,7 +77,7 @@ export class CreatePlayerComponent implements OnInit {
             }
             this.playerObj[`CLASS_NAME`] = `barbarian`;
             this.classes = classes;
-            this.updateClass();
+            this.rollHp();
         });
     }
 
@@ -81,21 +91,6 @@ export class CreatePlayerComponent implements OnInit {
     }
 
     /*
-        Gets the modifier associated with a score as
-        a string in the form of the modifier number
-        with a plus or minus in front
-    */
-    getModifier(score: number): string{
-        let modifier = Math.floor((score - 10) / 2);
-        return modifier < 0 ? `${modifier}` : `+${modifier}`;
-    }
-
-    // Both min and max are inclusive
-    getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    /*
         Gets the bonus the player's current race gives to
         the given stat score
     */
@@ -106,22 +101,13 @@ export class CreatePlayerComponent implements OnInit {
     }
 
     /*
-        Called when the class select box is changed, 
-        updates everything that needs to be updated on
-        class change
-    */
-    updateClass(){
-        this.rollHp();
-    }
-
-    /*
         Rolls a new HP value based on player's
         current class
     */
     rollHp(){
         let hit_die = this.classes[this.playerObj[`CLASS_NAME`]][`HIT_DIE`];
         let minHpIncr = (hit_die / 2) + 1;
-        let hpIncr = this.getRandomInt(1, hit_die);
+        let hpIncr = this.utils.getRandomInt(1, hit_die);
         this.playerObj[`MAX_HP`] = hpIncr < minHpIncr ? minHpIncr : hpIncr;
     }
 
@@ -134,7 +120,7 @@ export class CreatePlayerComponent implements OnInit {
             this.playerObj[score] = 0;
             let rolls = [];
             for(let i = 0; i < 4; i++)
-                rolls[i] = this.getRandomInt(1, 6);
+                rolls[i] = this.utils.getRandomInt(1, 6);
             for(let i = 0; i < 3; i++){
                 let highestIndex = rolls.indexOf(Math.max.apply(null, rolls));
                 this.playerObj[score] += rolls[highestIndex];
@@ -174,47 +160,28 @@ export class CreatePlayerComponent implements OnInit {
         Performs final validation of player attributes
         and proceeds to next step of character creation
     */
-    createPlayer(){
-        let finalPlayer = {
-            CHARACTER_NAME: ``,
-            RACE_NAME: ``,
-            CLASS_NAME: ``,
-            ALIGNMENT: ``,
-            AC: 0,
-            MAX_HP: 0,
-            SPD: 0,
-            STR: 0,
-            DEX: 0,
-            CON: 0,
-            INT: 0,
-            WIS: 0,
-            CHA: 0,
-        };
-        this.refreshExistingPlayers().then(() => {
+    finalizePartOne(){
+        return Promise.resolve(this.refreshExistingPlayers().then(() => {
             // Verify name
             if(!this.verifyName()){
                 this.toast.showToast(`alert-danger`, `Player name is invalid`);
                 return false;
             }
-            finalPlayer[`CHARACTER_NAME`] = this.playerObj[`CHARACTER_NAME`];
             // Verify race
             if(!Object.keys(this.races).includes(this.playerObj[`RACE_NAME`])){
                 this.toast.showToast(`alert-danger`, `Somehow your player race is invalid, how did you even manage that?`);
                 return false;
             }
-            finalPlayer[`RACE_NAME`] = this.playerObj[`RACE_NAME`];
             // Verify class
             if(!Object.keys(this.classes).includes(this.playerObj[`CLASS_NAME`])){
                 this.toast.showToast(`alert-danger`, `Somehow your player class is invalid, how did you even manage that?`);
                 return false;
             }
-            finalPlayer[`CLASS_NAME`] = this.playerObj[`CLASS_NAME`];
             // Verify alignment
             if(!this.alignments.includes(this.playerObj[`ALIGNMENT`])){
                 this.toast.showToast(`alert-danger`, `Somehow your alignment is invalid, how did you even manage that?`);
                 return false;
             }
-            finalPlayer[`ALIGNMENT`] = this.playerObj[`ALIGNMENT`];
             // Verify stat scores
             let scores = [`STR`, `DEX`, `CON`, `INT`, `WIS`, `CHA`];
             for(let score of scores){
@@ -226,14 +193,88 @@ export class CreatePlayerComponent implements OnInit {
                     this.toast.showToast(`alert-danger`, `${score} should not be greater than 20`);
                     return false;
                 }
-                finalPlayer[score] = this.playerObj[score];
             }
             // Calculate remaining attributes using verified ones
-            finalPlayer[`AC`] = 10 + parseInt(this.getModifier(this.playerObj[`DEX`]+this.getRaceScoreBonus(`DEX`)).substr(1));
-            finalPlayer[`MAX_HP`] = this.playerObj[`MAX_HP`] + parseInt(this.getModifier(this.playerObj[`CON`]+this.getRaceScoreBonus(`CON`)).substr(1));
-            finalPlayer[`SPD`] = this.races[this.playerObj[`RACE_NAME`]][`BASE_SPD`];
-            console.log(finalPlayer);
+            this.playerObj[`AC`] = 10 + parseInt(this.utils.getModifier(this.playerObj[`DEX`]+this.getRaceScoreBonus(`DEX`)).substr(1));
+            this.playerObj[`MAX_HP`] = this.playerObj[`MAX_HP`] + parseInt(this.utils.getModifier(this.playerObj[`CON`]+this.getRaceScoreBonus(`CON`)).substr(1));
+            this.playerObj[`SPD`] = this.races[this.playerObj[`RACE_NAME`]][`BASE_SPD`];
+            // Get the player's abilites based on selected race and class
+            this.api.GET(`/races/${this.playerObj['RACE_NAME']}/abilities`).then(res => {
+                for(let ability of res){
+                    this.playerObj[`ABILITIES`].push(ability[`ABILITY_NAME`]);
+                }
+                this.api.GET(`/classes/${this.playerObj[`CLASS_NAME`]}/abilities`).then(res2 => {
+                    for(let ability of res2)
+                        this.playerObj[`ABILITIES`].push(ability[`ABILITY_NAME`]);
+                });
+            });
+            // Get all learnable spells of levels 0 and 1
+            this.api.GET(`/classes/${this.playerObj[`CLASS_NAME`]}/spells`).then(res => {
+                console.log(res)
+                let learnableCantrips = {};
+                let learnableSpells = {};
+                for(let item of res){
+                    if(item[`LV`] === 0)
+                        learnableCantrips[item[`SPELL_NAME`]] = item;
+                    if(item[`LV`] === 1)
+                        learnableSpells[item[`SPELL_NAME`]] = item;
+                }
+                if(Object.keys(learnableCantrips).length == 0 && Object.keys(learnableSpells).length == 0){
+                    // This class can't learn any magic at this level, so skip part 2
+                    this.submitPlayer();
+                }
+                else{
+                    this.learnableCantrips = learnableCantrips;
+                    this.learnableSpells = learnableSpells;
+                    this.selectedCantrips = {};
+                    this.selectedSpells = {};
+                    this.partOneComplete = true;
+                }
+            });
             return true;
+        }));
+    }
+
+    finalizePartTwo(){
+        let cantrips = [];
+        for(let spell of Object.keys(this.selectedCantrips)){
+            if(this.selectedCantrips[spell])
+                cantrips.push(spell);
+            if(cantrips.length > 2){
+                this.toast.showToast(`alert-danger`, `Please select only two cantrips`);
+                return false;
+            }
+        }
+        // if(cantrips.length < 2){
+        //     this.toast.showToast(`alert-danger`, `Please select two cantrips`);
+        //     return false;
+        // }
+        let lv1spells = [];
+        for(let spell of Object.keys(this.selectedSpells)){
+            if(this.selectedSpells[spell])
+                lv1spells.push(spell);
+            if(lv1spells.length > 2){
+                this.toast.showToast(`alert-danger`, `Please select only two cantrips`);
+                return false;
+            }
+        }
+        // if(lv1spells.length < 2){
+        //     this.toast.showToast(`alert-danger`, `Please select two cantrips`);
+        //     return false;
+        // }
+        this.playerObj[`SPELLS`] = cantrips.concat(lv1spells);
+        this.submitPlayer();
+        return true;
+    }
+
+    /*
+        Ships the player object off to the API, 
+        called only once all validation is complete
+    */
+    submitPlayer(){
+        console.log(this.playerObj);
+        this.api.PUT(`/campaign/${this.campaign}/players/${this.playerObj[`CHARACTER_NAME`]}`, this.playerObj).then(res => {
+            this.toast.showToast(`alert-success`, `Player submitted!`);
         });
     }
 }
