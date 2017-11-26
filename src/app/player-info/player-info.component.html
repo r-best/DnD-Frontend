@@ -68,7 +68,7 @@
             <div class="container" *ngFor="let level of spells; let i = index" [attr.data-index]="i">
                 <!-- <div *ngIf="level.length > 0"> -->
                     <h4>Level {{i}}</h4>
-                    <div class="container" *ngFor="let spell of spells[i] | filterspells:null:null:null:null:VSMFilter">
+                    <div class="container" *ngFor="let spell of spells[i] | filterspells:null:null:concentrationFilter:null:VSMFilter">
                             <a class="btn" href="/spellbook/{{spell.SPELL_NAME}}">{{spell.SPELL_NAME}}</a>
                     </div>
                 <!-- </div> -->

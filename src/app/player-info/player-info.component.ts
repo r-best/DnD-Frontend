@@ -31,6 +31,7 @@ export class PlayerInfoComponent implements OnInit {
         [], // Level 8 spells
         [], // Level 9 spells
     ];
+    private concentrationFilter = `N/A`;
     private VSMFilter = {
         verbal: false,
         somatic: false,
