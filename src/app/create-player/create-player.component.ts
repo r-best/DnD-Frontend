@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../shared/services/api.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastService } from '../shared/services/toast.service';
 import { UtilsService } from '../shared/services/utils.service';
 
@@ -56,7 +56,7 @@ export class CreatePlayerComponent implements OnInit {
     private nameAlertVisible: boolean = false;
     private nameAlertText: string = ``;
 
-    constructor(private api: ApiService, private utils: UtilsService, private route: ActivatedRoute, private toast: ToastService) { }
+    constructor(private api: ApiService, private utils: UtilsService, private router: Router, private route: ActivatedRoute, private toast: ToastService) { }
 
     ngOnInit() {
         this.campaign = this.route.snapshot.params[`campaign`];
@@ -281,8 +281,10 @@ export class CreatePlayerComponent implements OnInit {
             console.log(res)
             if(res[`err`])
                 this.toast.showToast(`alert-danger`, res[`err`])
-            else
+            else{
                 this.toast.showToast(`alert-success`, `Player submitted!`);
+                this.router.navigateByUrl(`/campaigns/${this.campaign}`)
+            }
         }).catch(err => console.log(err));
     }
 }

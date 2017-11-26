@@ -30,9 +30,8 @@ export class PlayersComponent implements OnInit {
     
     confirmDeletePlayer(name: string){
         if(confirm(`Are you sure you want to delete '${name}'?`))
-            alert(`I havent implemented this yet be patient`);
-            // this.api.DEL(`/campaigns/${this.campaign}/players/${name}`).then(res => {
-            //     this.refreshPlayerList();
-            // });
+            this.api.DEL(`/campaigns/${this.campaign}/players/${name}`).then(res => {
+                this.refreshPlayerList();
+            });
     }
 }
