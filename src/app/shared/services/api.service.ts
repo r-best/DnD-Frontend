@@ -23,8 +23,10 @@ export class ApiService {
             // });
     }
     
-    PUT(route: string, body: {}): Promise<string>{
-        return this.http.put(`${apiAddress}${route}`, JSON.stringify(body))
+    PUT(route: string, body: {}): Promise<{}>{
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.put(`${apiAddress}${route}`, JSON.stringify(body), {headers: headers})
         .map((res: Response) => {
             console.log(`PUT ${route}`, res.json());
             return res.json();

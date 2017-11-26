@@ -201,36 +201,39 @@ export class CreatePlayerComponent implements OnInit {
             // Get the player's abilites based on selected race and class
             this.api.GET(`/races/${this.playerObj['RACE_NAME']}/abilities`).then(res => {
                 for(let ability of res){
+                    console.log(ability[`ABILITY_NAME`])
                     this.playerObj[`ABILITIES`].push(ability[`ABILITY_NAME`]);
                 }
+                console.log(this.playerObj[`ABILITIES`])
                 this.api.GET(`/classes/${this.playerObj[`CLASS_NAME`]}/abilities`).then(res2 => {
                     for(let ability of res2)
                         this.playerObj[`ABILITIES`].push(ability[`ABILITY_NAME`]);
+                    // Get all learnable spells of levels 0 and 1
+                    this.api.GET(`/classes/${this.playerObj[`CLASS_NAME`]}/spells`).then(res => {
+                        console.log(res)
+                        let learnableCantrips = {};
+                        let learnableSpells = {};
+                        for(let item of res){
+                            if(item[`LV`] === 0)
+                                learnableCantrips[item[`SPELL_NAME`]] = item;
+                            if(item[`LV`] === 1)
+                                learnableSpells[item[`SPELL_NAME`]] = item;
+                        }
+                        if(Object.keys(learnableCantrips).length == 0 && Object.keys(learnableSpells).length == 0){
+                            // This class can't learn any magic at this level, so skip part 2
+                            this.submitPlayer();
+                        }
+                        else{
+                            this.learnableCantrips = learnableCantrips;
+                            this.learnableSpells = learnableSpells;
+                            this.selectedCantrips = {};
+                            this.selectedSpells = {};
+                            this.partOneComplete = true;
+                        }
+                    });
                 });
             });
-            // Get all learnable spells of levels 0 and 1
-            this.api.GET(`/classes/${this.playerObj[`CLASS_NAME`]}/spells`).then(res => {
-                console.log(res)
-                let learnableCantrips = {};
-                let learnableSpells = {};
-                for(let item of res){
-                    if(item[`LV`] === 0)
-                        learnableCantrips[item[`SPELL_NAME`]] = item;
-                    if(item[`LV`] === 1)
-                        learnableSpells[item[`SPELL_NAME`]] = item;
-                }
-                if(Object.keys(learnableCantrips).length == 0 && Object.keys(learnableSpells).length == 0){
-                    // This class can't learn any magic at this level, so skip part 2
-                    this.submitPlayer();
-                }
-                else{
-                    this.learnableCantrips = learnableCantrips;
-                    this.learnableSpells = learnableSpells;
-                    this.selectedCantrips = {};
-                    this.selectedSpells = {};
-                    this.partOneComplete = true;
-                }
-            });
+            
             return true;
         }));
     }
@@ -273,8 +276,13 @@ export class CreatePlayerComponent implements OnInit {
     */
     submitPlayer(){
         console.log(this.playerObj);
-        this.api.PUT(`/campaign/${this.campaign}/players/${this.playerObj[`CHARACTER_NAME`]}`, this.playerObj).then(res => {
-            this.toast.showToast(`alert-success`, `Player submitted!`);
-        });
+        console.log(this.playerObj[`ABILITIES`])
+        this.api.PUT(`/campaigns/${this.campaign}/players/${this.playerObj[`CHARACTER_NAME`]}`, this.playerObj).then(res => {
+            console.log(res)
+            if(res[`err`])
+                this.toast.showToast(`alert-danger`, res[`err`])
+            else
+                this.toast.showToast(`alert-success`, `Player submitted!`);
+        }).catch(err => console.log(err));
     }
 }
