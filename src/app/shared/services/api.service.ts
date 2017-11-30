@@ -3,24 +3,26 @@ import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { ToastService } from './toast.service';
 
 const apiAddress: String = `http://localhost:3000/api`;
 
 @Injectable()
 export class ApiService {
 
-    constructor(private http: Http) { }
+    constructor(private http: Http, private toast: ToastService) { }
 
     GET(route: string): Promise<{}[]>{
         return this.http.get(`${apiAddress}${route}`)
             .map((res: Response) => {
                 console.log(`GET ${route}`, res.json());
                 return res.json();
-            }).toPromise();
-            // .catch((err, observable) => {
-            //     console.error(err)
-            //     return null;
-            // });
+            }).toPromise()
+            .catch(err => {
+                console.error(err);
+                this.toast.showToast(`alert-danger`, `Error!`);
+                return null;
+            });
     }
     
     PUT(route: string, body: {}): Promise<{}>{
@@ -30,7 +32,12 @@ export class ApiService {
         .map((res: Response) => {
             console.log(`PUT ${route}`, res.json());
             return res.json();
-        }).toPromise();
+        }).toPromise()
+        .catch(err => {
+            console.error(err);
+            this.toast.showToast(`alert-danger`, `Error!`);
+            return null;
+        });
     }
 
     DEL(route: string): Promise<string>{
@@ -38,6 +45,11 @@ export class ApiService {
         .map((res: Response) => {
             console.log(`DELETE ${route}`, res.json());
             return res.json();
-        }).toPromise();
+        }).toPromise()
+        .catch(err => {
+            console.error(err);
+            this.toast.showToast(`alert-danger`, `Error!`);
+            return null;
+        });
     }
 }
