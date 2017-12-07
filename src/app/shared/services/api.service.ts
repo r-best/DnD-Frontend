@@ -20,8 +20,8 @@ export class ApiService {
             }).toPromise()
             .catch(err => {
                 console.error(err);
-                this.toast.showToast(`alert-danger`, `Error!`);
-                return null;
+                this.toast.showToast(`alert-danger`, err.json());
+                return err.json();
             });
     }
     
@@ -35,8 +35,8 @@ export class ApiService {
         }).toPromise()
         .catch(err => {
             console.error(err);
-            this.toast.showToast(`alert-danger`, `Error!`);
-            return null;
+            this.toast.showToast(`alert-danger`, err.json());
+            return err.json();
         });
     }
 
@@ -48,8 +48,8 @@ export class ApiService {
         }).toPromise()
         .catch(err => {
             console.error(err);
-            this.toast.showToast(`alert-danger`, `Error!`);
-            return null;
+            this.toast.showToast(`alert-danger`, err.json());
+            return err.json();
         });
     }
 }

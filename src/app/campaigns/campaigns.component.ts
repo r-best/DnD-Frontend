@@ -50,8 +50,12 @@ export class CampaignsComponent implements OnInit {
     createCampaign(name: string){
         if(new RegExp("^[A-Za-z0-9-\\s]+$").test(name)){
             this.api.PUT(`/campaigns/${name}`, {}).then(res => {
-                this.toast.showToast(`alert-success`, `Campaign '${name}' successfully added!`);
-                this.closeNewCampaignDialogue();
+                if(res[`err`])
+                    this.toast.showToast(`alert-danger`, `Failed to add campaign '${name}'`);
+                else{
+                    this.toast.showToast(`alert-success`, `Campaign '${name}' successfully added!`);
+                    this.closeNewCampaignDialogue();
+                }
             });
         }
         else
