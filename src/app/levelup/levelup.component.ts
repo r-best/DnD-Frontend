@@ -21,7 +21,7 @@ export class LevelupComponent implements OnInit {
 
     // Flags to show the user the correct things they need for this level up
     private chooseSpellFlag: boolean = false;
-    private chooseCantripFlag: boolean = true;
+    private chooseCantripFlag: boolean = false;
     private abilityScoreImprovementFlag: boolean = false;
     private test = false;
 
@@ -83,8 +83,9 @@ export class LevelupComponent implements OnInit {
             this.api.GET(`/classes/${this.class}/abilities/${this.level}`)
             .then(res2 => {
                 this.player[`ABILITIES`] = [];
-                for(let ability in res2)
-                    this.player[`ABILITIES`].push(ability[`ABILITY_NAME`]);
+                for(let i = 0; i < res2.length; i++){
+                    this.player[`ABILITIES`].push(res2[i][`ABILITY_NAME`]);
+                }
             });
             this.setFlags();
         });
