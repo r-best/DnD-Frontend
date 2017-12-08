@@ -15,6 +15,10 @@ export class UtilsService {
         return modifier < 0 ? `${modifier}` : `+${modifier}`;
     }
 
+    getModifierAsInt(score: number): number{
+        return Math.floor((score - 10) / 2);
+    }
+
     // Both min and max are inclusive
     getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;

@@ -19,6 +19,7 @@ import { CampaignsComponent } from './campaigns/campaigns.component';
 import { PlayersComponent } from './players/players.component';
 import { PlayerInfoComponent } from './player-info/player-info.component';
 import { CreatePlayerComponent } from './create-player/create-player.component';
+import { LevelupComponent } from './levelup/levelup.component';
 
 const routes: Routes = [
     {path: ``, redirectTo: `/dashboard`, pathMatch: `full`},
@@ -28,7 +29,8 @@ const routes: Routes = [
     {path: `campaigns`, component: CampaignsComponent},
     {path: `campaigns/:campaign`, component: PlayersComponent},
     {path: `campaigns/:campaign/createPlayer`, component: CreatePlayerComponent},
-    {path: `campaigns/:campaign/:player`, component: PlayerInfoComponent}
+    {path: `campaigns/:campaign/:player`, component: PlayerInfoComponent},
+    {path: `campaigns/:campaign/:player/levelup`, component: LevelupComponent}
 ];
 
 @NgModule({
@@ -47,6 +49,7 @@ const routes: Routes = [
         PlayersComponent,
         PlayerInfoComponent,
         CreatePlayerComponent,
+        LevelupComponent,
         SpellFilter,
         KeysFilter
     ],

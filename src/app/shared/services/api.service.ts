@@ -18,10 +18,18 @@ export class ApiService {
                 console.log(`GET ${route}`, res.json());
                 return res.json();
             }).toPromise()
+            .then(
+                (res) => Promise.resolve(res),
+                (err) => {
+                    console.error(err);
+                    this.toast.showToast(`alert-danger`, err.json());
+                    return Promise.reject(err.json());
+                }
+            )
             .catch(err => {
                 console.error(err);
                 this.toast.showToast(`alert-danger`, err.json());
-                return err.json();
+                return Promise.reject(err.json());
             });
     }
     

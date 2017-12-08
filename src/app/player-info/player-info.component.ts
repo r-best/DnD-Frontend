@@ -42,6 +42,10 @@ export class PlayerInfoComponent implements OnInit {
 
     ngOnInit() {
         this.campaign = this.route.snapshot.params[`campaign`];
+        this.refreshPlayerData();
+    }
+
+    refreshPlayerData(){
         let playerName = this.route.snapshot.params[`player`];
         this.api.GET(`/campaigns/${this.campaign}/players/${playerName}`)
             .then((res)=>{
@@ -73,10 +77,5 @@ export class PlayerInfoComponent implements OnInit {
                     this.spells[element[`LV`]].push(element);
                 });
             });
-    }
-
-    getModifier(score: number): string{
-        let modifier = Math.floor((score - 10) / 2);
-        return modifier < 0 ? `${modifier}` : `+${modifier}`;
     }
 }

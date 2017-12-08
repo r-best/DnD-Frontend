@@ -1,0 +1,46 @@
+<h2>Level Up</h2>
+<div class="row justify-content-between" *ngIf="!chooseSpellFlag && !abilityScoreImprovementFlag && !chooseCantripFlag">
+    <p>No input needed this level, just hit submit and we'll take care of the automated stuff</p>
+</div>
+<div class="row border" *ngIf="abilityScoreImprovementFlag">
+    <div class="container">
+        <h3>Ability Score Increase</h3>
+        <p>Choose two attributes to increase by 1 point, or one attribute to increase by 2 points</p>
+        <div class="container" *ngFor="let attr of chosenAbilities | keys">
+            <label>
+                <input type="checkbox" [(ngModel)]="chosenAbilities[attr]" />{{attr}}
+            </label>
+        </div>
+    </div>
+</div>
+<div class="row border" *ngIf="chooseCantripFlag">
+    <div class="container">
+        <h3>Learn New Cantrip</h3>
+        <p>Select one new cantrip to learn this level</p>
+        <div class="container" *ngFor="let cantrip of newCantripOptions | keys">
+            <label>
+                <input type="checkbox" [(ngModel)]="selectedCantrips[cantrip]" />
+                <a class="btn" target="blank" href="/spellbook/{{cantrip}}">{{cantrip}}</a>
+            </label>
+        </div>
+    </div>
+</div>
+<div class="row border" *ngIf="chooseSpellFlag">
+    <div class="container">
+        <h3>Learn New Spell</h3>
+        <p>Select one new spell to learn this level</p>
+        <div class="container" *ngFor="let level of newSpellOptions; let i = index" [attr.data-index]="i">
+            <h4 *ngIf="(newSpellOptions[i] | keys).length !== 0">Level {{i}}</h4>
+            <div class="container" *ngFor="let spell of newSpellOptions[i] | keys">
+                <label>
+                    <input type="checkbox" [(ngModel)]="selectedSpells[i][spell]" />
+                    <a class="btn" target="blank" href="/spellbook/{{spell}}">{{spell}}</a>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-between">
+    <button class="btn btn-secondary" (click)="location.back()">Cancel</button>
+    <button type="submit" class="btn btn-primary" (click)="submitPlayer()">Submit</button>
+</div>
