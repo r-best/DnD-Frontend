@@ -22,7 +22,7 @@ export class LevelupComponent implements OnInit {
     // Flags to show the user the correct things they need for this level up
     private chooseSpellFlag: boolean = false;
     private chooseCantripFlag: boolean = false;
-    private abilityScoreImprovementFlag: boolean = true;
+    private abilityScoreImprovementFlag: boolean = false;
     private test = false;
 
     // Variables for new cantrip section
