@@ -1,84 +1,123 @@
-<div class="row justify-content-center">
-    <a class="btn btn-primary" href="/campaigns/{{campaign}}/{{player['CHARACTER_NAME']}}/levelup">Level Up</a>
-</div>
-<h1>{{player.CHARACTER_NAME}}</h1>
-<div class="row">
-    <div class="col border">
-        <p>Race: {{player.RACE_NAME}}</p>
-        <p>Alignment: {{player.ALIGNMENT}}</p>
-        <div *ngIf="levels.length == 1">
-            <p>Class: {{levels[0]['CLASS_NAME']}} level {{levels[0]['LV']}}</p>
-        </div>
-        <div *ngIf="levels.length > 1">
-            <p>Classes: </p>
-            <ul>
-                <li *ngFor="let class of levels">{{class['CLASS_NAME']}} level {{class['LV']}}</li>
-            </ul>
-        </div>
+<div *ngIf="!isNewItemDialogueOpen">
+    <div class="row justify-content-center">
+        <a class="btn btn-primary" href="/campaigns/{{campaign}}/{{player['CHARACTER_NAME']}}/levelup">Level Up</a>
     </div>
-    <div class="col border">
-        <p>AC: {{player.AC}}</p>
-        <p>Max HP: {{player.MAX_HP}}</p>
-        <p>Speed: {{player.SPD}}</p>
-        <p>Inspiration: {{player.INSP}}</p>
-    </div>
-    <div class="col border">
-        <label>Strength: {{player.STR}} (<b>{{utils.getModifier(player.STR)}}</b>)</label><br />
-        <label>Dexterity: {{player.DEX}} (<b>{{utils.getModifier(player.DEX)}}</b>)</label><br />
-        <label>Constitution: {{player.CON}} (<b>{{utils.getModifier(player.CON)}}</b>)</label><br />
-        <label>Intelligence: {{player.INT}} (<b>{{utils.getModifier(player.INT)}}</b>)</label><br />
-        <label>Wisdom: {{player.WIS}} (<b>{{utils.getModifier(player.WIS)}}</b>)</label><br />
-        <label>Charisma: {{player.CHA}} (<b>{{utils.getModifier(player.CHA)}}</b>)</label><br />
-    </div>
-</div>
-<div class="row">
-    <div class="col border">
-        <h2>Attacks:</h2>
-        <div *ngFor="let attack of attacks">
-            {{attack['ATTACK_NAME']}}:
-            <label *ngIf="attack['ATK_BONUS']">+{{attack['ATK_BONUS']}} to attack</label><br />
-            <label *ngIf="attack['DAMAGE']">{{attack['DAMAGE']}}</label>
-            <label *ngIf="attack['DMG_TYPE']"> {{attack['DMG_TYPE']}} damage</label><br />
-            {{attack['DESCR']}}
-        </div>
-    </div>
-    <div class="col border">
-        <h2>Abilities:</h2>
-        <p *ngFor="let ability of abilities">{{ability['ABILITY_NAME']}}: {{ability['DESCR']}}</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col border">
-        <h2>Spells Known:</h2>
-        <div class="row justify-content-start">
-            <div class="col">
-                Requires Concentration?
-                <select [(ngModel)]="concentrationFilter">
-                    <option>N/A</option>
-                    <option>Yes</option>
-                    <option>No</option>
-                </select><br />
-                Spell Requirements:<br />
-                <label><input type="checkbox" [(ngModel)]="VSMFilter['verbal']" />verbal</label><br />
-                <label><input type="checkbox" [(ngModel)]="VSMFilter['somatic']" />somatic</label><br />
-                <label><input type="checkbox" [(ngModel)]="VSMFilter['material']" />material</label><br />
+    <h1>{{player.CHARACTER_NAME}}</h1>
+    <div class="row">
+        <div class="col border">
+            <p>Race: {{player.RACE_NAME}}</p>
+            <p>Alignment: {{player.ALIGNMENT}}</p>
+            <div *ngIf="levels.length == 1">
+                <p>Class: {{levels[0]['CLASS_NAME']}} level {{levels[0]['LV']}}</p>
+            </div>
+            <div *ngIf="levels.length > 1">
+                <p>Classes: </p>
+                <ul>
+                    <li *ngFor="let class of levels">{{class['CLASS_NAME']}} level {{class['LV']}}</li>
+                </ul>
             </div>
         </div>
-        <div class="row justify-content-start">
-            <div class="container" *ngFor="let level of spells; let i = index" [attr.data-index]="i">
-                <!-- <div *ngIf="level.length > 0"> -->
-                    <h4>Level {{i}}</h4>
-                    <div class="container" *ngFor="let spell of spells[i] | filterspells:null:null:concentrationFilter:null:VSMFilter">
-                            <a class="btn" href="/spellbook/{{spell.SPELL_NAME}}">{{spell.SPELL_NAME}}</a>
-                    </div>
-                <!-- </div> -->
+        <div class="col border">
+            <p>AC: {{player.AC}}</p>
+            <p>Max HP: {{player.MAX_HP}}</p>
+            <p>Speed: {{player.SPD}}</p>
+            <p>Inspiration: {{player.INSP}}</p>
+        </div>
+        <div class="col border">
+            <label>Strength: {{player.STR}} (<b>{{utils.getModifier(player.STR)}}</b>)</label><br />
+            <label>Dexterity: {{player.DEX}} (<b>{{utils.getModifier(player.DEX)}}</b>)</label><br />
+            <label>Constitution: {{player.CON}} (<b>{{utils.getModifier(player.CON)}}</b>)</label><br />
+            <label>Intelligence: {{player.INT}} (<b>{{utils.getModifier(player.INT)}}</b>)</label><br />
+            <label>Wisdom: {{player.WIS}} (<b>{{utils.getModifier(player.WIS)}}</b>)</label><br />
+            <label>Charisma: {{player.CHA}} (<b>{{utils.getModifier(player.CHA)}}</b>)</label><br />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col border">
+            <h2>Attacks:</h2>
+            <div *ngFor="let attack of attacks">
+                {{attack['ATTACK_NAME']}}:
+                <label *ngIf="attack['ATK_BONUS']">+{{attack['ATK_BONUS']}} to attack</label><br />
+                <label *ngIf="attack['DAMAGE']">{{attack['DAMAGE']}}</label>
+                <label *ngIf="attack['DMG_TYPE']"> {{attack['DMG_TYPE']}} damage</label><br />
+                {{attack['DESCR']}}
+            </div>
+        </div>
+        <div class="col border">
+            <h2>Abilities:</h2>
+            <p *ngFor="let ability of abilities">{{ability['ABILITY_NAME']}}: {{ability['DESCR']}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col border">
+            <h2>Spells Known:</h2>
+            <div class="row justify-content-start">
+                <div class="col">
+                    Requires Concentration?
+                    <select [(ngModel)]="concentrationFilter">
+                        <option>N/A</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select><br />
+                    Spell Requirements:<br />
+                    <label><input type="checkbox" [(ngModel)]="VSMFilter['verbal']" />verbal</label><br />
+                    <label><input type="checkbox" [(ngModel)]="VSMFilter['somatic']" />somatic</label><br />
+                    <label><input type="checkbox" [(ngModel)]="VSMFilter['material']" />material</label><br />
+                </div>
+            </div>
+            <div class="row justify-content-start">
+                <div class="container" *ngFor="let level of spells; let i = index" [attr.data-index]="i">
+                    <!-- <div *ngIf="level.length > 0"> -->
+                        <h4>Level {{i}}</h4>
+                        <div class="container" *ngFor="let spell of spells[i] | filterspells:null:null:concentrationFilter:null:VSMFilter">
+                                <a class="btn" href="/spellbook/{{spell.SPELL_NAME}}">{{spell.SPELL_NAME}}</a>
+                        </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="col border">
+            <h2>Items:</h2>
+            <div *ngFor="let item of items" class="row justify-content-between">
+                <div class="col-8">
+                    {{item['ITEM_NAME']}} x{{item['QUANTITY']}}<label *ngIf="item['DESCR']">: {{item['DESCR']}}</label>
+                </div>
+                <div class="col-2 text-right">
+                    <button class="btn btn-secondary btn-sm" (click)="confirmDeleteItem(item)">
+                        <span class="oi oi-trash" title="icon trash" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row justify-content-start mb-4">
+                <div class="col-10">
+                    <button class="btn btn-primary" (click)="openNewItemDialogue()">+ New Item</button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col border">
-        <h2>Items:</h2>
-        <div *ngFor="let item of items">
-            {{item['ITEM_NAME']}} x{{item['QUANTITY']}}<label *ngIf="item['DESCR']">: {{item['DESCR']}}</label>
+</div>
+<div *ngIf="isNewItemDialogueOpen">
+    <form>
+        <div class="form-group">
+            <label for="inputName">Name</label>
+            <input type="name" class="form-control" id="inputName" #newItemName>
         </div>
+        <div class="form-group">
+            <label for="inputDescr">Description</label>
+            <input type="name" class="form-control" id="inputDescr" #newItemDescr>
+        </div>
+        <div class="form-group">
+            <label for="inputQuantity">Quantity</label>
+            <input type="number" class="form-control" id="inputQuantity" #newItemQuantity>
+        </div>
+        <button type="submit" class="btn btn-primary" (click)="createNewItem(newItemName.value, newItemDescr.value, newItemQuantity.value)">Create</button>
+        <button class="btn btn-secondary" (click)="closeNewItemDialogue()">Cancel</button>
+    </form>
+    <!-- <div class="row justify-content-between">
+        <input type="text" #newItemNameField/>
     </div>
+    <div class="row justify-content-between">
+        <button type="submit" class="btn btn-primary" (click)="createNewItem()">Create</button>
+        <button class="btn btn-secondary" (click)="closeNewItemDialogue()">Cancel</button>
+    </div> -->
 </div>

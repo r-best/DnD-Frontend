@@ -26,7 +26,7 @@ export class CampaignsComponent implements OnInit {
             this.campaigns = res;
         });
     }
-    
+
     confirmDeleteCampaign(name: string){
         if(confirm(`Are you sure you want to delete '${name}'?`))
             this.api.DEL(`/campaigns/${name}`).then(res => {
