@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../shared/services/api.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { UtilsService } from '../shared/services/utils.service';
 import { ToastService } from '../shared/services/toast.service';
@@ -22,7 +22,7 @@ export class LevelupComponent implements OnInit {
     // Flags to show the user the correct things they need for this level up
     private chooseSpellFlag: boolean = false;
     private chooseCantripFlag: boolean = false;
-    private abilityScoreImprovementFlag: boolean = false;
+    private abilityScoreImprovementFlag: boolean = true;
     private test = false;
 
     // Variables for new cantrip section
@@ -55,15 +55,15 @@ export class LevelupComponent implements OnInit {
 
     // Variables for ability score improvement section
     private chosenAbilities = {
-        'str': false,
-        'dex': false,
-        'con': false,
-        'int': false,
-        'wis': false,
-        'cha': false,
+        'STR': false,
+        'DEX': false,
+        'CON': false,
+        'INT': false,
+        'WIS': false,
+        'CHA': false,
     };
 
-    constructor(private api: ApiService, private route: ActivatedRoute, private location: Location, private utils: UtilsService, private toast: ToastService) { }
+    constructor(private api: ApiService, private route: ActivatedRoute, private router: Router, private location: Location, private utils: UtilsService, private toast: ToastService) { }
 
     ngOnInit() {
         this.campaign = this.route.snapshot.params[`campaign`];
@@ -187,7 +187,9 @@ export class LevelupComponent implements OnInit {
                 return false;
             }
             else if(abilities.length == 1){ // If one ability chosen, increase it by 2 points
+                console.log(abilities[0], newData[abilities[0]])
                 newData[abilities[0]] += 2;
+                console.log(abilities[0], newData[abilities[0]])
             }
             else if(abilities.length === 2){ // If two abilities chosen, increase both by 1 point
                 newData[abilities[0]] += 1;
@@ -244,6 +246,7 @@ export class LevelupComponent implements OnInit {
         this.api.PUT(`/campaigns/${this.campaign}/players/${this.player[`CHARACTER_NAME`]}`, newData)
         .then(res => {
             console.log(res)
+            this.router.navigateByUrl(`/campaigns/${this.campaign}/${this.player[`CHARACTER_NAME`]}`);
         });
     }
 }

@@ -285,6 +285,8 @@ export class CreatePlayerComponent implements OnInit {
                 this.toast.showToast(`alert-success`, `Player submitted!`);
                 this.router.navigateByUrl(`/campaigns/${this.campaign}`)
             }
-        }).catch(err => console.log(err));
+        },
+        (err) => console.log(err)
+        ).catch(err => console.log(err));
     }
 }
